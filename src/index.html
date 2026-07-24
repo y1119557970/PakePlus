@@ -3281,11 +3281,11 @@
         .dark .cost-header-express .fa-cubes,
         .dark .cost-header-express span[id$="-count"],
         .dark .cost-header-express .cost-toggle-icon { color: var(--dm-purple) !important; }
-        .dark .cost-header-management { background-color: var(--dm-bg-card); background-image: linear-gradient(135deg, rgba(234,179,8,0.12) 0%, rgba(234,179,8,0.04) 100%) !important; }
-        .dark .cost-header-management h2 { color: var(--dm-warning) !important; }
+        .dark .cost-header-management { background-color: var(--dm-bg-card); background-image: linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 100%) !important; }
+        .dark .cost-header-management h2 { color: var(--dm-link) !important; }
         .dark .cost-header-management .fa-cubes,
         .dark .cost-header-management span[id$="-count"],
-        .dark .cost-header-management .cost-toggle-icon { color: var(--dm-warning) !important; }
+        .dark .cost-header-management .cost-toggle-icon { color: var(--dm-link) !important; }
         .dark .cost-header-packaging { background-color: var(--dm-bg-card); background-image: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0.04) 100%) !important; }
         .dark .cost-header-packaging h2 { color: var(--dm-success) !important; }
         .dark .cost-header-packaging .fa-cubes,
@@ -7921,7 +7921,7 @@
             }
             .cost-header-management {
                 background-color: #fff;
-                background-image: linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(253, 230, 138, 0.08) 100%);
+                background-image: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(191, 219, 254, 0.08) 100%);
             }
             .cost-header-packaging {
                 background-color: #fff;
@@ -7952,7 +7952,7 @@
                 background: linear-gradient(90deg, #a855f7 0%, transparent 100%);
             }
             .cost-header-management h2::after {
-                background: linear-gradient(90deg, #eab308 0%, transparent 100%);
+                background: linear-gradient(90deg, #3b82f6 0%, transparent 100%);
             }
             .cost-header-packaging h2::after {
                 background: linear-gradient(90deg, #10b981 0%, transparent 100%);
@@ -7961,17 +7961,17 @@
                 background: linear-gradient(90deg, #ef4444 0%, transparent 100%);
             }
             .cost-header-express .cost-toggle-icon { color: #a855f7; }
-            .cost-header-management .cost-toggle-icon { color: #eab308; }
+            .cost-header-management .cost-toggle-icon { color: #3b82f6; }
             .cost-header-packaging .cost-toggle-icon { color: #10b981; }
             .cost-header-product .cost-toggle-icon { color: #ef4444; }
             .cost-header-express h2 { color: #7e22ce; }
-            .cost-header-management h2 { color: #a16207; }
+            .cost-header-management h2 { color: #1d4ed8; }
             .cost-header-packaging h2 { color: #047857; }
             .cost-header-product h2 { color: #991b1b; }
             .cost-header-express .fa-cubes { color: #a855f7; }
             .cost-header-express span[id$="-count"] { color: #a855f7; }
-            .cost-header-management .fa-cubes { color: #eab308; }
-            .cost-header-management span[id$="-count"] { color: #eab308; }
+            .cost-header-management .fa-cubes { color: #3b82f6; }
+            .cost-header-management span[id$="-count"] { color: #3b82f6; }
             .cost-header-packaging .fa-cubes { color: #10b981; }
             .cost-header-packaging span[id$="-count"] { color: #10b981; }
             .cost-header-product .fa-cubes { color: #ef4444; }
@@ -10253,21 +10253,21 @@
                                 <div class="mb-8">
                                     <h4 class="text-lg font-medium text-gray-700 mb-4">存储情况</h4>
                                     <div class="grid grid-cols-3 gap-4" style="grid-template-columns: repeat(3, minmax(0, 1fr)) !important;">
-                                        <div class="bg-blue-50 p-4 rounded-lg shadow-sm">
+                                        <div class="bg-blue-50 p-4 rounded-2xl shadow-sm">
                                             <div class="text-sm text-gray-500">总空间</div>
                                             <div class="text-2xl font-bold text-blue-600" id="total-storage">计算中...</div>
                                         </div>
-                                        <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                                        <div class="bg-green-50 p-4 rounded-2xl shadow-sm">
                                             <div class="text-sm text-gray-500">已用空间</div>
                                             <div class="text-2xl font-bold text-green-600" id="used-storage">0 MB</div>
                                         </div>
-                                        <div class="bg-yellow-50 p-4 rounded-lg shadow-sm">
+                                        <div class="bg-yellow-50 p-4 rounded-2xl shadow-sm">
                                             <div class="text-sm text-gray-500">可用空间</div>
                                             <div class="text-2xl font-bold text-yellow-600" id="available-storage">5 MB</div>
                                         </div>
                                     </div>
 
-                                    <div class="mt-4 text-sm text-gray-500 bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                    <div class="mt-4 text-sm text-gray-500 bg-blue-50 border border-blue-100 rounded-2xl p-4">
                                         <i class="fa fa-info-circle mr-2 text-blue-500"></i>
                                         提示：为保障流畅运行与数据安全，建议您定期备份并清理冗余数据，必要时按需导入备份文件查看使用。
                                     </div>
@@ -10470,7 +10470,7 @@
                                     <img id="usage-help-logo" src="images/weice_logo.png" alt="未策" class="h-36">
                                 </div>
                                 <div class="space-y-6 text-gray-700">
-                                    <p class="text-lg font-bold" style="text-indent: 2em;">这是一款专为中小电商卖家打造的全链路智能经营工具，围绕「成本 · 采购 · 利润 · 售后 · 决策」核心链路运转，各模块数据深度联动，形成完整经营闭环。一键导入订单表格并录入推广费用，即可快速测算精准利润——即便面对多链接、小单量等复杂场景，也能自动归集统计，确保数据颗粒度无遗漏。测算追踪退货、仅退款等售后场景，精确核算每笔订单的实际售后损耗及售后占比，真实还原利润口径。集成本管理、规格管理、店铺管理、采购管理、售后追踪与数据看板六大模块于一体，系统性解决「账目核算不清、利润结构不透明、售后损耗难量化、经营决策缺乏数据支撑」四大核心痛点。内置智能新品定价工具，可自动测算折扣及优惠券叠加后的实际定价与保本投产比，让每一笔经营决策有据可依，助力新手卖家快速上手，实现高效定价与精细化运营。</p>
+                                    <p class="text-lg font-bold" style="text-indent: 2em;">这是一款专为中小电商卖家打造的全链路高效管理工具，围绕「成本 · 采购 · 利润 · 售后 · 决策」核心链路运转，各模块数据深度联动，形成完整经营闭环。一键导入订单表格并录入推广费用，即可快速测算精准利润——即便面对多链接、小单量等复杂场景，也能自动归集统计，确保数据颗粒度无遗漏。测算追踪退货、仅退款等售后场景，精确核算每笔订单的实际售后损耗及售后占比，真实还原利润口径。集成本管理、规格管理、店铺管理、采购管理、售后追踪与数据看板六大模块于一体，系统性解决「账目核算不清、利润结构不透明、售后损耗难量化、经营决策缺乏数据支撑」四大核心痛点。内置智能新品定价工具，可自动测算折扣及优惠券叠加后的实际定价与保本投产比，让每一笔经营决策有据可依，助力新手卖家快速上手，实现高效定价与精细化运营。</p>
 
                                     <div class="h-8"></div>
 
@@ -22573,7 +22573,7 @@ ${shopsMap[link.shopId]}
                                     padding: 0.625rem 0.75rem;
                                     border: 1.5px solid #e2e8f0;
                                     border-radius: 0.5rem;
-                                    background: #f8fafc;
+                                    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
                                     font-size: 0.9rem;
                                     font-weight: 500;
                                     color: #1e293b;
@@ -22939,24 +22939,47 @@ ${shopsMap[link.shopId]}
                                 tooltip.textContent = target.getAttribute('data-tooltip');
                                 tooltip.style.cssText = `
                                     position: fixed;
-                                    background-color: rgba(0, 0, 0, 0.8);
+                                    background-color: rgba(0, 0, 0, 0.85);
                                     color: white;
-                                    padding: 8px 12px;
-                                    border-radius: 4px;
-                                    font-size: 12px;
+                                    padding: 10px 14px;
+                                    border-radius: 6px;
+                                    font-size: 13px;
                                     white-space: pre-wrap;
-                                    max-width: 300px;
+                                    word-break: break-word;
+                                    max-width: min(400px, 80vw);
                                     z-index: 9999;
                                     pointer-events: none;
                                     opacity: 0;
                                     transition: opacity 0.2s ease-in-out;
+                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                    line-height: 1.5;
                                 `;
                                 document.body.appendChild(tooltip);
 
                                 setTimeout(() => {
                                     const rect = target.getBoundingClientRect();
-                                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
-                                    tooltip.style.top = `${rect.bottom + 10}px`;
+                                    const tooltipWidth = tooltip.offsetWidth;
+                                    const tooltipHeight = tooltip.offsetHeight;
+                                    const viewportWidth = window.innerWidth;
+                                    const viewportHeight = window.innerHeight;
+                                    
+                                    let left = rect.left + rect.width / 2;
+                                    let top = rect.bottom + 10;
+                                    
+                                    // 水平边界检测
+                                    if (left - tooltipWidth / 2 < 10) {
+                                        left = tooltipWidth / 2 + 10;
+                                    } else if (left + tooltipWidth / 2 > viewportWidth - 10) {
+                                        left = viewportWidth - tooltipWidth / 2 - 10;
+                                    }
+                                    
+                                    // 垂直边界检测：如果下方空间不足，显示在上方
+                                    if (top + tooltipHeight > viewportHeight - 10) {
+                                        top = rect.top - tooltipHeight - 10;
+                                    }
+                                    
+                                    tooltip.style.left = `${left}px`;
+                                    tooltip.style.top = `${top}px`;
                                     tooltip.style.transform = 'translateX(-50%)';
                                     tooltip.style.opacity = '1';
                                 }, 10);
@@ -23420,8 +23443,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Profit Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-green-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-line-chart text-green-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-green-300 to-green-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-jpy text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">总净利润</p>
                     </div>
@@ -23431,8 +23454,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Quantity Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-blue-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-cubes text-blue-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-cubes text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">总销售数量</p>
                     </div>
@@ -23442,8 +23465,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Revenue Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-purple-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-credit-card text-purple-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-400 to-purple-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-credit-card text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">总实收金额</p>
                     </div>
@@ -23453,8 +23476,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Platform Service Fee Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-amber-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-cogs text-amber-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-amber-300 to-amber-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-cogs text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">平台服务费</p>
                     </div>
@@ -23464,8 +23487,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Small Payment Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-red-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-gift text-red-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-indigo-300 to-indigo-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-gift text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">达人佣金</p>
                     </div>
@@ -23475,8 +23498,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Consumer Compensation Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-pink-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-heart-o text-pink-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-pink-400 to-pink-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-heart-o text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">赔付·小额打款</p>
                     </div>
@@ -23486,8 +23509,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Insurance Fee Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-teal-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-shield text-teal-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-teal-300 to-teal-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-shield text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">权益保险</p>
                     </div>
@@ -23497,8 +23520,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Other Deduction Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-indigo-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-headphones text-indigo-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-red-400 to-red-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-headphones text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">售后损耗</p>
                     </div>
@@ -23508,8 +23531,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Express Fee Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-orange-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-truck text-orange-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-orange-300 to-orange-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-truck text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">快递附加费</p>
                     </div>
@@ -23519,8 +23542,8 @@ ${shopsMap[link.shopId]}
                 <!-- Total Advertising Fee Card -->
                 <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center bg-gray-300 rounded-xl transition-transform duration-200 hover:scale-110">
-                            <i class="fa fa-bullhorn text-gray-700"></i>
+                        <div class="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-xl shadow-md transition-transform duration-200 hover:scale-110">
+                            <i class="fa fa-bullhorn text-xl"></i>
                         </div>
                         <p class="text-base font-bold text-black">总广告费</p>
                     </div>
@@ -24995,8 +25018,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">付款笔数</p>
                                 <p id="payment-count" class="text-3xl font-bold text-gray-800">0</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-purple-200 rounded-2xl">
-                                <i class="fa fa-list-alt text-purple-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-list-alt text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月的数据，筛选后展示更多</p>
@@ -25007,8 +25030,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">付款金额</p>
                                 <p id="payment-amount" class="text-3xl font-bold text-gray-800">¥0.00</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-green-200 rounded-2xl">
-                                <i class="fa fa-money text-green-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-money text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月的数据，筛选后展示更多</p>
@@ -25019,8 +25042,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">退款金额</p>
                                 <p id="refund-amount" class="text-3xl font-bold text-red-600">¥0.00</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-red-200 rounded-2xl">
-                                <i class="fa fa-refresh text-red-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-red-400 to-red-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-refresh text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月的数据，筛选后展示更多</p>
@@ -25412,8 +25435,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">采购种类</p>
                                 <p id="purchase-category-count" class="text-3xl font-bold text-gray-800">0</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-blue-200 rounded-2xl">
-                                <i class="fa fa-cubes text-blue-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-cubes text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月数据</p>
@@ -25424,8 +25447,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">采购数量</p>
                                 <p id="purchase-quantity" class="text-3xl font-bold text-gray-800">0</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-purple-200 rounded-2xl">
-                                <i class="fa fa-cubes text-purple-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-purple-400 to-purple-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-cubes text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月数据</p>
@@ -25436,8 +25459,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">采购金额</p>
                                 <p id="purchase-amount" class="text-3xl font-bold text-gray-800">¥0.00</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-green-200 rounded-2xl">
-                                <i class="fa fa-money text-green-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-money text-xl"></i>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">近一个月数据</p>
@@ -25448,8 +25471,8 @@ ${shopsMap[link.shopId]}
                                 <p class="text-sm font-medium text-gray-600">未付金额</p>
                                 <p id="unpaid-amount" class="text-3xl font-bold text-gray-800">******</p>
                             </div>
-                            <div class="w-12 h-12 flex items-center justify-center bg-yellow-200 rounded-2xl">
-                                <i class="fa fa-credit-card text-yellow-600 text-xl"></i>
+                            <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-yellow-400 to-yellow-600 text-white rounded-2xl shadow-md">
+                                <i class="fa fa-credit-card text-xl"></i>
                             </div>
                         </div>
                         <div class="flex items-center mt-2">
@@ -27007,6 +27030,8 @@ ${shopsMap[link.shopId]}
                 let modal = document.getElementById('aftersales-stats-modal');
                 let modalContent = document.getElementById('aftersales-stats-modal-content');
                 
+                const lossFeeInputs = ['shipping-fee', 'platform-fee', 'aftersales-insurance-fee', 'promotion-fee', 'packaging-fee', 'labor-fee', 'inventory-fee', 'quality-fee'];
+                
                 // 生成店铺选项HTML（每次都重新生成，确保平台信息最新）
                 const shopOptionsHTML = shops.map(s => `
                     <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer aftersales-shop-option flex justify-between items-center" data-value="${s.name}" data-platform="${s.platform || ''}">
@@ -27074,9 +27099,9 @@ ${shopsMap[link.shopId]}
                                     <div>
                                         <label class="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2">
                                             <span>统计方式</span>
-                                            <div class="relative group">
-                                                <i class="fa fa-exclamation-circle text-gray-400 hover:text-gray-500 transition-colors cursor-help" style="font-size: 16px;"></i>
-                                                <div class="absolute left-full top-1/2 -translate-y-1/2 ml-3 w-[320px] bg-white rounded-2xl shadow-2xl border border-gray-200 p-5 z-[100] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform -translate-x-2 group-hover:translate-x-0">
+                                            <div class="relative">
+                                                <i id="order-type-tooltip-trigger" class="fa fa-exclamation-circle text-gray-400 hover:text-gray-500 transition-colors cursor-pointer" style="font-size: 16px;"></i>
+                                                <div id="order-type-tooltip" class="absolute left-full top-1/2 -translate-y-1/2 ml-3 w-[320px] bg-white rounded-2xl shadow-2xl border border-gray-200 p-5 z-[100] opacity-0 invisible transition-all duration-200 transform -translate-x-2" style="pointer-events: auto;">
                                                     <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-3 h-3 bg-white border-l border-t border-gray-200 rotate-45"></div>
                                                     <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
                                                         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center mr-3 shadow-sm">
@@ -27101,12 +27126,12 @@ ${shopsMap[link.shopId]}
                                     </div>
 
                                     <div>
-                                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                        <label id="calculate-loss-label" class="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
                                             <input type="checkbox" id="calculate-loss-checkbox" class="w-4 h-4 text-primary">
                                             <span class="text-gray-700 font-medium">售后损耗计算</span>
-                                            <div class="relative group">
-                                                <i class="fa fa-exclamation-circle text-gray-400 hover:text-gray-500 transition-colors cursor-help" style="font-size: 18px;"></i>
-                                                <div class="absolute left-full top-1/2 -translate-y-1/2 ml-3 w-[420px] bg-white rounded-2xl shadow-2xl border border-gray-200 p-5 z-[100] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform -translate-x-2 group-hover:translate-x-0">
+                                            <div class="relative ml-auto">
+                                                <i id="loss-calc-tooltip-trigger" class="fa fa-exclamation-circle text-gray-400 hover:text-gray-500 transition-colors cursor-pointer" style="font-size: 18px;"></i>
+                                                <div id="loss-calc-tooltip" class="absolute left-full top-1/2 -translate-y-1/2 ml-3 w-[420px] bg-white rounded-2xl shadow-2xl border border-gray-200 p-5 z-[100] opacity-0 invisible transition-all duration-200 transform -translate-x-2" style="pointer-events: auto;">
                                                     <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-3 h-3 bg-white border-l border-t border-gray-200 rotate-45"></div>
                                                     <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
                                                         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mr-3 shadow-sm">
@@ -27172,7 +27197,7 @@ ${shopsMap[link.shopId]}
                                             </div>
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">运费险/元</label>
-                                                <input type="number" id="insurance-fee" class="w-full pl-3 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="0.00" step="0.01" min="0">
+                                                <input type="number" id="aftersales-insurance-fee" class="w-full pl-3 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="0.00" step="0.01" min="0">
                                             </div>
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">推广费/元</label>
@@ -27223,6 +27248,62 @@ ${shopsMap[link.shopId]}
                         }
                     });
 
+                    document.getElementById('calculate-loss-label').addEventListener('click', function(e) {
+                        const tooltipTrigger = document.getElementById('loss-calc-tooltip-trigger');
+                        if (tooltipTrigger && (e.target === tooltipTrigger || tooltipTrigger.contains(e.target))) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    lossFeeInputs.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.addEventListener('input', function() {
+                                localStorage.setItem('aftersales_loss_' + id, this.value);
+                            });
+                        }
+                    });
+
+                    const tooltipTrigger = document.getElementById('loss-calc-tooltip-trigger');
+                    const tooltip = document.getElementById('loss-calc-tooltip');
+                    if (tooltipTrigger && tooltip) {
+                        tooltipTrigger.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if (tooltip.classList.contains('opacity-0')) {
+                                tooltip.classList.remove('opacity-0', 'invisible');
+                                tooltip.classList.add('translate-x-0');
+                            } else {
+                                tooltip.classList.add('opacity-0', 'invisible');
+                                tooltip.classList.remove('translate-x-0');
+                            }
+                        });
+                        tooltip.addEventListener('mouseleave', function() {
+                            tooltip.classList.add('opacity-0', 'invisible');
+                            tooltip.classList.remove('translate-x-0');
+                        });
+                    }
+
+                    const orderTypeTooltipTrigger = document.getElementById('order-type-tooltip-trigger');
+                    const orderTypeTooltip = document.getElementById('order-type-tooltip');
+                    if (orderTypeTooltipTrigger && orderTypeTooltip) {
+                        orderTypeTooltipTrigger.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if (orderTypeTooltip.classList.contains('opacity-0')) {
+                                orderTypeTooltip.classList.remove('opacity-0', 'invisible');
+                                orderTypeTooltip.classList.add('translate-x-0');
+                            } else {
+                                orderTypeTooltip.classList.add('opacity-0', 'invisible');
+                                orderTypeTooltip.classList.remove('translate-x-0');
+                            }
+                        });
+                        orderTypeTooltip.addEventListener('mouseleave', function() {
+                            orderTypeTooltip.classList.add('opacity-0', 'invisible');
+                            orderTypeTooltip.classList.remove('translate-x-0');
+                        });
+                    }
+
                     document.getElementById('aftersales-stats-input').addEventListener('click', function(e) {
                         e.stopPropagation();
                         const dropdown = document.getElementById('aftersales-stats-dropdown');
@@ -27247,6 +27328,12 @@ ${shopsMap[link.shopId]}
                     // 绑定平台选项点击事件
                     bindAftersalesPlatformOptionsEvents();
 
+                    document.querySelectorAll('input[name="aftersales-order-type"]').forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            localStorage.setItem('aftersales_order_type', this.value);
+                        });
+                    });
+
                     document.querySelectorAll('input[name="aftersales-stats-type"]').forEach(radio => {
                         radio.addEventListener('change', function() {
                             const label = document.getElementById('aftersales-select-label');
@@ -27262,6 +27349,7 @@ ${shopsMap[link.shopId]}
                                 platformContainer.classList.remove('hidden');
                                 shopContainer.classList.add('hidden');
                             }
+                            localStorage.setItem('aftersales_stats_type', this.value);
                         });
                     });
 
@@ -27303,6 +27391,47 @@ ${shopsMap[link.shopId]}
                         `;
                         // 重新绑定平台选项点击事件
                         bindAftersalesPlatformOptionsEvents();
+                    }
+                }
+
+                const checkbox = document.getElementById('calculate-loss-checkbox');
+                const lossFields = document.getElementById('loss-calculation-fields');
+                checkbox.checked = false;
+                lossFields.classList.add('hidden');
+                
+                lossFeeInputs.forEach(id => {
+                    const saved = localStorage.getItem('aftersales_loss_' + id);
+                    if (saved !== null) {
+                        const el = document.getElementById(id);
+                        if (el) el.value = saved;
+                    }
+                });
+
+                const savedStatsType = localStorage.getItem('aftersales_stats_type');
+                if (savedStatsType) {
+                    const statsTypeRadio = document.querySelector(`input[name="aftersales-stats-type"][value="${savedStatsType}"]`);
+                    if (statsTypeRadio) {
+                        statsTypeRadio.checked = true;
+                        const label = document.getElementById('aftersales-select-label');
+                        const shopContainer = document.getElementById('aftersales-shop-select-container');
+                        const platformContainer = document.getElementById('aftersales-platform-select-container');
+                        if (savedStatsType === 'shop') {
+                            label.textContent = '选择店铺';
+                            shopContainer.classList.remove('hidden');
+                            platformContainer.classList.add('hidden');
+                        } else {
+                            label.textContent = '选择平台';
+                            platformContainer.classList.remove('hidden');
+                            shopContainer.classList.add('hidden');
+                        }
+                    }
+                }
+
+                const savedOrderType = localStorage.getItem('aftersales_order_type');
+                if (savedOrderType) {
+                    const orderTypeRadio = document.querySelector(`input[name="aftersales-order-type"][value="${savedOrderType}"]`);
+                    if (orderTypeRadio) {
+                        orderTypeRadio.checked = true;
                     }
                 }
 
@@ -27433,7 +27562,7 @@ ${shopsMap[link.shopId]}
                 if (calculateLoss) {
                     shippingFee = parseFloat(document.getElementById('shipping-fee').value) || 0;
                     platformFee = parseFloat(document.getElementById('platform-fee').value) || 0;
-                    insuranceFee = parseFloat(document.getElementById('insurance-fee').value) || 0;
+                    insuranceFee = parseFloat(document.getElementById('aftersales-insurance-fee').value) || 0;
                     promotionFee = parseFloat(document.getElementById('promotion-fee').value) || 0;
                     packagingFee = parseFloat(document.getElementById('packaging-fee').value) || 0;
                     laborFee = parseFloat(document.getElementById('labor-fee').value) || 0;
@@ -33378,8 +33507,8 @@ ${shopsMap[link.shopId]}
                         break;
                     case 'platform':
                         icon = 'fa-handshake-o';
-                        bgColor = 'bg-yellow-50';
-                        textColor = 'text-yellow-600';
+                        bgColor = 'bg-blue-50';
+                        textColor = 'text-blue-600';
                         break;
                     case 'accessory':
                         icon = 'fa-puzzle-piece';
@@ -33393,7 +33522,7 @@ ${shopsMap[link.shopId]}
                         <div class="p-5">
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                    <div id="product-image-icon-${item.id}" class="${bgColor} ${textColor} p-3 rounded-lg flex-shrink-0 hover:opacity-80 transition-opacity flex items-center justify-center" style="width: 40px; height: 40px;">
+                                    <div id="product-image-icon-${item.id}" class="${bgColor} ${textColor} p-3 flex-shrink-0 hover:opacity-80 transition-opacity flex items-center justify-center" style="width: 40px; height: 40px; border-radius: 0.8rem;">
                                         <i class="fa ${icon} text-xl"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
@@ -33410,9 +33539,8 @@ ${shopsMap[link.shopId]}
                                         ` : ''}
                                     </div>
                                 </div>
-                                <div class="bg-gray-50 rounded-lg px-4 py-3 text-right flex-shrink-0 ml-4">
-                                    <p class="text-xs font-medium text-gray-500">金额</p>
-                                    <p class="text-xl font-bold text-gray-800">¥${item.amount.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 3})}</p>
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl px-4 text-right flex-shrink-0 ml-4 flex items-center justify-center" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06); height: 70px; border: 1px solid #eef0f3;">
+                                    <p class="text-2xl font-bold text-gray-800"><span class="text-base font-semibold text-gray-500">¥</span>${item.amount.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 3})}</p>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center">
@@ -43472,8 +43600,8 @@ ${shopsMap[link.shopId]}
     </div>
 
     <!-- Add Cost Modal (for express, packaging, platform, accessory) -->
-    <div id="add-cost-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-3xl shadow-xl border border-white/20 transform scale-95 opacity-0 transition-all duration-300 hover:shadow-2xl">
+    <div id="add-cost-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300 overflow-y-auto py-8">
+        <div id="add-cost-modal-content" class="bg-white rounded-3xl p-6 w-full max-w-3xl shadow-xl border border-white/20 transform scale-95 opacity-0 transition-all duration-300 hover:shadow-2xl my-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="cost-modal-title" class="text-lg font-semibold text-gray-800">添加管理项目</h3>
                 <button class="close-modal text-gray-500 hover:text-gray-700">
@@ -43574,7 +43702,7 @@ ${shopsMap[link.shopId]}
                             <span>新增</span>
                         </button>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto max-h-72 overflow-y-auto">
                         <table class="w-full border-collapse">
                             <thead>
                                 <tr class="bg-gray-50">
