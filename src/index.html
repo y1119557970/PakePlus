@@ -1,4 +1,4 @@
-<html lang="zh-CN"><head>
+﻿<html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://www.gstatic.com https://apis.google.com https://lf6-cdn-tpc.byteimg.com https://lf3-cdn-tpc.byteimg.com https://lf26-cdn-tpc.byteimg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https: wss: blob:;">
@@ -3464,6 +3464,11 @@
         .dark .grid.gap-4 > .bg-white .text-gray-800 { color: var(--dm-text) !important; }
         .dark .grid.gap-4 > .bg-white .text-gray-500 { color: var(--dm-text-muted) !important; }
         .dark .grid.gap-4 > .bg-white .bg-gray-50 { background-color: var(--dm-bg-elevated) !important; }
+        .dark .grid.gap-4 > .bg-white .bg-gradient-to-br.from-gray-50.to-gray-100 {
+            background: linear-gradient(135deg, var(--dm-bg-elevated) 0%, var(--dm-bg-card) 100%) !important;
+            border-color: var(--dm-border) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+        }
         .dark .cost-header ~ .cost-content .text-gray-500 { color: var(--dm-text-muted) !important; }
         .dark #cost-item-ranking-empty,
         .dark .text-center.py-4.text-gray-500 { color: var(--dm-text-muted) !important; }
@@ -7111,7 +7116,7 @@
     <div id="add-link-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="z-index: 1000;">
         <div class="bg-white rounded-3xl shadow-xl max-w-md w-full mx-4 border border-white/20 transform scale-95 opacity-0 transition-all duration-300 hover:shadow-2xl">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">新增链接</h3>
+                <h3 class="text-xl font-bold text-gray-800">新增商品</h3>
                 <button type="button" onclick="closeAddLinkModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
@@ -7119,9 +7124,9 @@
             <form id="add-link-form" class="p-6">
                 <div class="mb-6">
                     <label for="add-link-name" class="block text-sm font-medium text-gray-700 mb-2">
-                        链接名称 <span class="text-danger">*</span>
+                        商品名称 <span class="text-danger">*</span>
                     </label>
-                    <input type="text" id="add-link-name" class="input-field w-full" placeholder="请输入链接名称">
+                    <input type="text" id="add-link-name" class="input-field w-full" placeholder="请输入商品名称">
                 </div>
                 <div class="mb-6">
                     <label for="add-link-category" class="block text-sm font-medium text-gray-700 mb-2">
@@ -7176,7 +7181,7 @@
     <div id="add-product-to-link-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="z-index: 1000;">
         <div class="bg-white rounded-3xl w-full max-w-md shadow-xl border border-white/20 transform transition-all duration-300 hover:shadow-2xl scale-95 opacity-0">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">添加商品</h3>
+                <h3 class="text-xl font-bold text-gray-800">新增链接</h3>
                 <button onclick="closeAddProductToLinkModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
@@ -7458,14 +7463,14 @@
     <div id="delete-link-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" style="z-index: 1001;">
         <div class="bg-white rounded-3xl w-full max-w-md shadow-xl border border-white/20 transform transition-all duration-300 hover:shadow-2xl">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">确认删除链接</h3>
+                <h3 class="text-xl font-bold text-gray-800">确认删除商品</h3>
                 <button id="close-delete-link-confirm-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="p-6">
                 <div class="mb-6">
-                    <p class="text-gray-600">您确定要删除这个链接吗？此操作无法撤销。</p>
+                    <p class="text-gray-600">你确定要删除这个商品？此操作无法撤销。</p>
                     <p id="delete-link-info" class="font-medium text-red-500 mt-2"></p>
                 </div>
 
@@ -7507,14 +7512,14 @@
     <div id="remove-product-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" style="z-index: 1001;">
         <div class="bg-white rounded-3xl w-full max-w-md shadow-xl border border-white/20 transform transition-all duration-300 hover:shadow-2xl">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">确认移除商品</h3>
+                <h3 class="text-xl font-bold text-gray-800">确认移除链接</h3>
                 <button id="close-remove-product-confirm-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="p-6">
                 <div class="mb-6">
-                    <p class="text-gray-600">您确定要从链接中移除这个商品吗？此操作无法撤销。</p>
+                    <p class="text-gray-600">你确定要从商品中移除这个链接吗？</p>
                     <p id="remove-product-info" class="font-medium text-red-500 mt-2"></p>
                 </div>
 
@@ -9752,7 +9757,7 @@
     <div id="edit-link-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="z-index: 9999; position: fixed; top: 0; left: 0; right: 0; bottom: 0;">
         <div class="bg-white rounded-3xl shadow-xl max-w-md w-full mx-4 border border-white/20 transform transition-all duration-300 hover:shadow-2xl scale-95 opacity-0">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">编辑链接</h3>
+                <h3 class="text-xl font-bold text-gray-800">编辑商品</h3>
                 <button type="button" onclick="closeEditLinkModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
@@ -9761,9 +9766,9 @@
                 <input type="hidden" id="edit-link-index">
                 <div class="mb-4">
                     <label for="edit-link-name" class="block text-sm font-medium text-gray-700 mb-1">
-                        链接名称 <span class="text-danger">*</span>
+                        商品名称 <span class="text-danger">*</span>
                     </label>
-                    <input type="text" id="edit-link-name" class="input-field w-full" placeholder="请输入链接名称">
+                    <input type="text" id="edit-link-name" class="input-field w-full" placeholder="请输入商品名称">
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -9887,7 +9892,7 @@
     <div id="edit-product-modal" class="fixed inset-0 bg-black/0 backdrop-blur-0 flex items-center justify-center z-50 hidden transition-all duration-300 overflow-auto" style="z-index: 9999; position: fixed; top: 0; left: 0; right: 0; bottom: 0;">
         <div class="bg-white rounded-3xl shadow-xl max-w-md w-full mx-4 border border-white/20 transform transition-all duration-300 hover:shadow-2xl scale-95 opacity-0">
             <div class="flex items-center justify-between p-6 border-b border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800">编辑商品</h3>
+                <h3 class="text-xl font-bold text-gray-800">编辑链接</h3>
                 <button type="button" onclick="closeEditProductModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
                     <i class="fa fa-times"></i>
                 </button>
@@ -9917,9 +9922,9 @@
                 </div>
                 <div class="mb-4">
                     <label for="edit-product-note" class="block text-sm font-medium text-gray-700 mb-1">
-                        商品备注
+                        链接备注
                     </label>
-                    <textarea id="edit-product-note" class="input-field w-full" rows="2" placeholder="请输入商品备注（可选）"></textarea>
+                    <textarea id="edit-product-note" class="input-field w-full" rows="2" placeholder="请输入链接备注（可选）"></textarea>
                 </div>
 
                 <div class="mb-4">
@@ -16911,7 +16916,7 @@
                         enableProductDragAndDrop(linkIndex);
                     }, 100);
 
-                    showToast('提示', '已进入移动编辑状态，可拖拽调整商品顺序', 'success');
+                    showToast('提示', '已进入移动编辑状态，可拖拽调整链接顺序', 'success');
                 }
             }
 
@@ -17280,14 +17285,14 @@
                 try {
 
                     if (!pricingData.links[sourceLinkIndex] || !pricingData.links[targetLinkIndex]) {
-                        console.error('链接数据不存在');
-                        showToast('错误', '链接数据不存在', 'error');
+                        console.error('商品数据不存在');
+                        showToast('错误', '商品数据不存在', 'error');
                         return;
                     }
 
                     if (sourceProductIndex < 0 || sourceProductIndex >= pricingData.links[sourceLinkIndex].products.length) {
-                        console.error('源商品索引无效:', sourceProductIndex);
-                        showToast('错误', '源商品位置无效', 'error');
+                        console.error('源链接索引无效:', sourceProductIndex);
+                        showToast('错误', '源链接位置无效', 'error');
                         return;
                     }
 
@@ -17459,11 +17464,11 @@
 
                         console.log('移动模式状态已恢复');
 
-                    showToast('成功', '商品已成功移动到新链接', 'success');
+                    showToast('成功', '链接已成功移动到新商品', 'success');
 
                 } catch (error) {
-                    console.error('跨链接移动商品失败:', error);
-                    showToast('错误', '商品移动失败: ' + error.message, 'error');
+                    console.error('跨商品移动链接失败:', error);
+                    showToast('错误', '链接移动失败: ' + error.message, 'error');
                 } finally {
 
                     setTimeout(() => {
@@ -17786,8 +17791,8 @@
                     !pricingData.links[draggedLinkIndex].products ||
                     sourceProductIndex < 0 ||
                     sourceProductIndex >= pricingData.links[draggedLinkIndex].products.length) {
-                    console.error('源商品数据不存在或索引无效');
-                    showToast('错误', '源商品数据不存在', 'error');
+                    console.error('源链接数据不存在或索引无效');
+                    showToast('错误', '源链接数据不存在', 'error');
                     return;
                 }
 
@@ -17899,8 +17904,8 @@
                 try {
 
                     if (!pricingData.links[linkIndex] || !pricingData.links[linkIndex].products) {
-                        console.error('链接数据不存在');
-                        showToast('错误', '链接数据不存在', 'error');
+                        console.error('商品数据不存在');
+                        showToast('错误', '商品数据不存在', 'error');
                         return;
                     }
 
@@ -18065,11 +18070,11 @@
                             console.log('✅ 移动模式状态已完全恢复，卡片保持展开，其他交互已禁用');
                         }
 
-                    showToast('成功', '商品顺序调整成功', 'success');
+                    showToast('成功', '链接顺序调整成功', 'success');
 
                 } catch (error) {
-                    console.error('移动商品失败:', error);
-                    showToast('错误', '商品移动失败: ' + error.message, 'error');
+                    console.error('移动链接失败:', error);
+                    showToast('错误', '链接移动失败: ' + error.message, 'error');
                 }
             }
 
@@ -18108,7 +18113,7 @@
                             <div class="flex items-center space-x-4">
                                 <div class="flex items-center">
                                     <i class="fa fa-chevron-down mr-2 text-gray-500 transition-transform duration-150 link-toggle-icon" style="transform: ${iconTransform}"></i>
-                                    <span class="font-medium">${link.name || '未命名链接'}</span>
+                                    <span class="font-medium">${link.name || '未命名商品'}</span>
                                     <span class="ml-2 badge badge-shop">${link.category || '未分类'}</span>
                                     ${link.shop && shopsMap[link.shop] ? `<span class="ml-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-[#6f9bd1] to-[#486ea9] text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
 ${shopsMap[link.shop]}
@@ -18116,7 +18121,7 @@ ${shopsMap[link.shop]}
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <i class="fa fa-cubes" style="color: #0b4a9f"></i>
-                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个商品</span>
+                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个链接</span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -18146,17 +18151,17 @@ ${shopsMap[link.shop]}
                                     ${link.note ? `
                                     <div class="flex items-center space-x-2 ml-4 whitespace-nowrap">
                                         <i class="fa fa-cubes" style="color: #0b4a9f"></i>
-                                        <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个商品</span>
+                                        <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个链接</span>
                                     </div>
                                     ` : ''}
                                 </div>
                             </div>
                             <div class="mb-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="block text-md font-bold text-gray-900">商品列表</label>
+                                    <label class="block text-md font-bold text-gray-900">链接列表</label>
                                     <button class="px-4 py-2 rounded-xl bg-[#0066FF] text-white flex items-center space-x-2 shadow-[5px_5px_10px_#0047b3,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#0047b3,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-sm" onclick="addProductToLink(${index})">
                                         <i class="fa fa-plus"></i>
-                                        <span>添加商品</span>
+                                        <span>新增链接</span>
                                     </button>
                                 </div>
                                 <div class="space-y-3 max-h-[900px] overflow-visible pr-2 mt-3">
@@ -18185,7 +18190,7 @@ ${shopsMap[link.shop]}
                                             </div>
                                             <div class="text-sm text-gray-600">${product.note || '无备注'}</div>
                                         </div>
-                                    `).join('') : '<div class="text-center py-4 text-gray-500">暂无商品</div>'}
+                                    `).join('') : '<div class="text-center py-4 text-gray-500">暂无链接</div>'}
                                 </div>
                             </div>
                         </div>
@@ -18278,7 +18283,7 @@ ${shopsMap[link.shop]}
                             <div class="flex items-center space-x-4">
                                 <div class="flex items-center">
                                     <i class="fa fa-chevron-down mr-2 text-gray-500 transition-transform duration-150 link-toggle-icon"></i>
-                                    <span class="font-medium">${link.name || '未命名链接'}</span>
+                                    <span class="font-medium">${link.name || '未命名商品'}</span>
                                     <span class="ml-2 badge badge-shop">${link.category || '未分类'}</span>
                                     ${link.shop && shopsMap[link.shop] ? `<span class="ml-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-[#6f9bd1] to-[#486ea9] text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
 ${shopsMap[link.shop]}
@@ -18286,7 +18291,7 @@ ${shopsMap[link.shop]}
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     <i class="fa fa-cubes" style="color: #0b4a9f"></i>
-                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个商品</span>
+                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个链接</span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -18316,17 +18321,17 @@ ${shopsMap[link.shop]}
                                     ${link.note ? `
                                     <div class="flex items-center space-x-2 ml-4 whitespace-nowrap">
                                         <i class="fa fa-cubes" style="color: #0b4a9f"></i>
-                                        <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个商品</span>
+                                        <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个链接</span>
                                     </div>
                                     ` : ''}
                                 </div>
                             </div>
                             <div class="mb-4">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="block text-md font-bold text-gray-900">商品列表</label>
+                                    <label class="block text-md font-bold text-gray-900">链接列表</label>
                                     <button class="px-4 py-2 rounded-xl bg-[#0066FF] text-white flex items-center space-x-2 shadow-[5px_5px_10px_#0047b3,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#0047b3,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-sm" onclick="addProductToLink(${index})">
                                         <i class="fa fa-plus"></i>
-                                        <span>添加商品</span>
+                                        <span>新增链接</span>
                                     </button>
                                 </div>
                                 <div class="space-y-3 max-h-[900px] overflow-visible pr-2 mt-3">
@@ -18355,7 +18360,7 @@ ${shopsMap[link.shop]}
                                             </div>
                                             <div class="text-sm text-gray-600">${product.note || '无备注'}</div>
                                         </div>
-                                    `).join('') : '<div class="text-center py-4 text-gray-500">暂无商品</div>'}
+                                    `).join('') : '<div class="text-center py-4 text-gray-500">暂无链接</div>'}
                                 </div>
                             </div>
                         </div>
@@ -18621,19 +18626,19 @@ ${shopsMap[link.shop]}
                                             <span class="ml-2 badge badge-shop">${product.category || '未分类'}</span>
                                         </div>
                                         <div class="flex items-center space-x-2">
-                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="copyProduct(${linkIndex}, ${productIndex})" title="复制商品">
+                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="copyProduct(${linkIndex}, ${productIndex})" title="复制链接">
                                                 <i class="fa fa-copy"></i>
                                             </button>
-                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="toggleProductMark(${linkIndex}, ${productIndex})" title="标记商品">
+                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="toggleProductMark(${linkIndex}, ${productIndex})" title="标记链接">
                                                 <i class="fa fa-flag"></i>
                                             </button>
                                             <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-black text-white shadow-[5px_5px_10px_#000000,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#000000,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="openOperationLogModal(${linkIndex}, ${productIndex})" title="运营操作记录">
                                                 <i class="fa fa-history"></i>
                                             </button>
-                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-[#0066FF] text-white shadow-[5px_5px_10px_#0047b3,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#0047b3,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="editProduct(${linkIndex}, ${productIndex})" title="编辑商品">
+                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-[#0066FF] text-white shadow-[5px_5px_10px_#0047b3,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#0047b3,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="editProduct(${linkIndex}, ${productIndex})" title="编辑链接">
                                                 <i class="fa fa-pencil"></i>
                                             </button>
-                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-500 text-white shadow-[5px_5px_10px_#c53030,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#c53030,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="removeProductFromLink(${linkIndex}, ${productIndex})" title="删除商品">
+                                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-500 text-white shadow-[5px_5px_10px_#c53030,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#c53030,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="removeProductFromLink(${linkIndex}, ${productIndex})" title="删除链接">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -18785,14 +18790,14 @@ ${shopsMap[link.shop]}
                                     </div>
                                 </div>
                             `;
-                        }).join('') : '<div class="text-center py-4 text-gray-500">暂无商品</div>';
+                        }).join('') : '<div class="text-center py-4 text-gray-500">暂无链接</div>';
 
                         return `
                             <div class="border border-gray-200 rounded-2xl overflow-hidden mb-6 product-card-hover" data-link-index="${linkIndex}">
                                 <div class="bg-gradient-to-r from-primary/15 to-primary/5 px-4 py-3 border-b border-primary/30">
                                     <div class="flex justify-between items-center">
                                         <div class="flex items-center">
-                                            <h3 class="text-lg font-semibold">${link.name || '未命名链接'}</h3>
+                                            <h3 class="text-lg font-semibold">${link.name || '未命名商品'}</h3>
                                         </div>
                                         <div class="flex items-center space-x-2">
                                             ${link.shopId && shopsMap[link.shopId] ? `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-[#6f9bd1] to-[#486ea9] text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
@@ -18801,7 +18806,7 @@ ${shopsMap[link.shopId]}
                                             <span class="badge badge-shop">${link.category || '未分类'}</span>
                                             <div class="flex items-center space-x-2">
                                     <i class="fa fa-cubes" style="color: #0b4a9f"></i>
-                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个商品</span>
+                                    <span class="text-sm font-semibold" style="color: #0b4a9f">${link.products ? link.products.length : 0} 个链接</span>
                                 </div>
                                         </div>
                                     </div>
@@ -18837,7 +18842,7 @@ ${shopsMap[link.shopId]}
 
                 } catch (error) {
                     console.error('Error in renderDisplayLinks:', error);
-                    showToast('错误', '渲染链接展示失败: ' + error.message, 'error');
+                    showToast('错误', '渲染商品展示失败: ' + error.message, 'error');
                 }
             }
 
@@ -19128,7 +19133,7 @@ ${shopsMap[link.shopId]}
                 const note = document.getElementById('add-link-note').value.trim();
 
                 if (!name) {
-                    showToast('错误', '请输入链接名称', 'error');
+                    showToast('错误', '请输入商品名称', 'error');
                     return;
                 }
 
@@ -19145,7 +19150,7 @@ ${shopsMap[link.shopId]}
                 await window.db.insertOne('pricingData', newLink, 'links');
                 pricingData.links.unshift(newLink);
                 renderLinks();
-                showToast('成功', '链接添加成功', 'success');
+                showToast('成功', '商品添加成功', 'success');
                 closeAddLinkModal();
             }
 
@@ -19162,7 +19167,7 @@ ${shopsMap[link.shopId]}
                         toggleIcon.style.transform = 'rotate(180deg)';
                     }
                 });
-                showToast('操作', '已展开所有链接', 'success');
+                showToast('操作', '已展开所有商品', 'success');
             };
 
             window.collapseAllLinks = function() {
@@ -19178,7 +19183,7 @@ ${shopsMap[link.shopId]}
                         toggleIcon.style.transform = 'rotate(0deg)';
                     }
                 });
-                showToast('操作', '已收起所有链接', 'success');
+                showToast('操作', '已收起所有商品', 'success');
             };
 
             function toggleEditLinkCategoryDropdown() {
@@ -19342,7 +19347,7 @@ ${shopsMap[link.shopId]}
                     const note = document.getElementById('edit-link-note').value.trim();
 
                     if (!name) {
-                        showToast('错误', '链接名称不能为空', 'error');
+                        showToast('错误', '商品名称不能为空', 'error');
                         return;
                     }
 
@@ -19383,7 +19388,7 @@ ${shopsMap[link.shopId]}
 
                     closeEditLinkModal();
 
-                    showToast('成功', '链接更新成功', 'success');
+                    showToast('成功', '商品更新成功', 'success');
 
                 } catch (error) {
                     console.error('Error saving edited link:', error);
@@ -19601,7 +19606,7 @@ ${shopsMap[link.shopId]}
 
                         const link = pricingData.links[index];
 
-                        const linkInfo = link ? (link.name || link.linkName || link.title || `链接 ${index + 1}`) : `链接 ${index + 1}`;
+                        const linkInfo = link ? (link.name || link.linkName || link.title || `商品 ${index + 1}`) : `商品 ${index + 1}`;
                         document.getElementById('delete-link-info').textContent = linkInfo;
 
                         window.currentDeleteLink = {
@@ -19640,7 +19645,7 @@ ${shopsMap[link.shopId]}
                             }
                         }, 10);
 
-                        showToast('成功', '链接删除成功', 'success');
+                        showToast('成功', '商品删除成功', 'success');
                     } catch (error) {
                         console.error('删除链接时出错:', error);
                         showToast('错误', `删除失败: ${error.message}`, 'error');
@@ -20032,7 +20037,7 @@ ${shopsMap[link.shopId]}
                     if (headerBefore) {
                         const productCountBadge = headerBefore.querySelector('.badge-primary');
                         if (productCountBadge) {
-                            productCountBadge.textContent = `${pricingData.links[currentLinkIndex].products.length} 个商品`;
+                            productCountBadge.textContent = `${pricingData.links[currentLinkIndex].products.length} 个链接`;
                         }
                     }
 
@@ -20041,7 +20046,7 @@ ${shopsMap[link.shopId]}
 
                         const cardProductCount = contentBefore.querySelector('.text-primary.font-semibold');
                         if (cardProductCount) {
-                            cardProductCount.textContent = `${pricingData.links[currentLinkIndex].products.length} 个商品`;
+                            cardProductCount.textContent = `${pricingData.links[currentLinkIndex].products.length} 个链接`;
                         }
 
                         const productsListContainer = contentBefore.querySelector('.space-y-3');
@@ -20144,7 +20149,7 @@ ${shopsMap[link.shopId]}
                         renderDisplayLinks();
                     }
 
-                    showToast('成功', '商品添加成功', 'success');
+                    showToast('成功', '链接添加成功', 'success');
                     closeAddProductToLinkModal();
                 } else {
                     alert('请输入商品ID！');
@@ -20193,7 +20198,7 @@ ${shopsMap[link.shopId]}
 
                         const link = pricingData.links[linkIndex];
                         const product = link?.products[productIndex];
-                        const productInfo = product ? `${product.productId || '未命名商品'}` : `商品 ${productIndex + 1}`;
+                        const productInfo = product ? `${product.productId || '未命名链接'}` : `链接 ${productIndex + 1}`;
 
                         document.getElementById('remove-product-info').textContent = productInfo;
 
@@ -20254,7 +20259,7 @@ ${shopsMap[link.shopId]}
                         }
 
                         renderDisplayLinks();
-                        showToast('成功', '商品删除成功', 'success');
+                        showToast('成功', '链接删除成功', 'success');
                     } catch (error) {
                         console.error('移除商品时出错:', error);
                         showToast('错误', `移除失败: ${error.message}`, 'error');
@@ -20583,7 +20588,7 @@ ${shopsMap[link.shopId]}
                 }
 
                 renderDisplayLinks();
-                showToast('成功', '商品复制成功', 'success');
+                showToast('成功', '链接复制成功', 'success');
             }
 
             async function addSpec(linkIndex, productIndex) {
@@ -20598,13 +20603,13 @@ ${shopsMap[link.shopId]}
 
                     if (!pricingData.links[linkIndex]) {
                         console.error('Link not found at index:', linkIndex);
-                        showToast('错误', '链接不存在', 'error');
+                        showToast('错误', '商品不存在', 'error');
                         return;
                     }
 
                     if (!pricingData.links[linkIndex].products || !pricingData.links[linkIndex].products[productIndex]) {
                         console.error('Product not found at index:', productIndex);
-                        showToast('错误', '商品不存在', 'error');
+                        showToast('错误', '链接不存在', 'error');
                         return;
                     }
 
@@ -20750,7 +20755,7 @@ ${shopsMap[link.shopId]}
                 const { linkIndex: sourceLinkIndex, productIndex: sourceProductIndex, specIndex: sourceSpecIndex } = draggedSourceIndices;
 
                 if (sourceLinkIndex !== linkIndex || sourceProductIndex !== productIndex) {
-                    showToast('提示', '只能在同一商品内排序规格', 'warning');
+                    showToast('提示', '只能在同一链接内排序规格', 'warning');
                     return;
                 }
 
@@ -20878,7 +20883,7 @@ ${shopsMap[link.shopId]}
             function confirmBulkApply() {
                 try {
                     if (currentBulkApplyLinkIndex === null || currentBulkApplyProductIndex === null) {
-                        showToast('错误', '未选择要批量应用的商品', 'error');
+                        showToast('错误', '未选择要批量应用的链接', 'error');
                         return;
                     }
 
@@ -21438,17 +21443,22 @@ ${shopsMap[link.shopId]}
 
                 const mgmtContainer = document.getElementById('links-container');
                 if (mgmtContainer) {
-                    const mgmtOldId = product._prevProductId || product.productId;
-                    mgmtContainer.querySelectorAll('.product-card').forEach(card => {
-                        const idSpan = card.querySelector('.font-bold.text-gray-900');
-                        if (idSpan && idSpan.textContent.includes(mgmtOldId)) {
-                            idSpan.textContent = '商品ID: ' + product.productId;
-                            const badge = card.querySelector('.badge-shop');
-                            if (badge) badge.textContent = product.category || '未分类';
-                            const noteDiv = card.querySelector('.text-sm.text-gray-600');
-                            if (noteDiv) noteDiv.textContent = product.note || '无备注';
+                    const linkHeader = mgmtContainer.querySelector(`.link-header[data-index="${linkIndex}"]`);
+                    if (linkHeader) {
+                        const linkCard = linkHeader.closest('.border-2');
+                        if (linkCard) {
+                            const productCards = linkCard.querySelectorAll('.product-card');
+                            const targetCard = productCards[productIndex];
+                            if (targetCard) {
+                                const idSpan = targetCard.querySelector('.font-bold.text-gray-900');
+                                if (idSpan) idSpan.textContent = '商品ID: ' + product.productId;
+                                const badge = targetCard.querySelector('.badge-shop');
+                                if (badge) badge.textContent = product.category || '未分类';
+                                const noteDiv = targetCard.querySelector('.text-sm.text-gray-600');
+                                if (noteDiv) noteDiv.textContent = product.note || '无备注';
+                            }
                         }
-                    });
+                    }
                 }
 
                 const container = document.getElementById('display-links-container');
@@ -23317,10 +23327,10 @@ ${shopsMap[link.shopId]}
             <div class="bg-white rounded-3xl shadow-md mb-6 overflow-visible mx-auto" style="max-width: 1400px;">
                 <div class="flex p-1 bg-gradient-to-r from-slate-100/80 to-slate-50/80 rounded-3xl border border-slate-200/60 backdrop-blur-sm" style="box-shadow: 0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8);">
                     <button class="pricing-tab flex-1 py-3 px-4 text-center rounded-2xl transition-all duration-300 font-bold text-xl text-primary bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)]" data-pricing-tab="link-management">
-                        链接管理
+                        商品管理
                     </button>
                     <button class="pricing-tab flex-1 py-3 px-4 text-center rounded-2xl transition-all duration-300 font-bold text-xl text-slate-400 hover:text-black" data-pricing-tab="link-display">
-                        商品详细
+                        链接详细
                     </button>
                 </div>
             </div>
@@ -23335,7 +23345,7 @@ ${shopsMap[link.shopId]}
                     <div class="flex justify-between items-center mb-4">
                         <div class="flex items-center space-x-2 flex-wrap gap-2">
                             <div class="relative flex-grow max-w-md">
-                                <input type="text" id="link-search" placeholder="搜索链接或商品ID..." class="w-full px-4 py-2 pl-10 border-2 border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 placeholder-gray-400" style="padding-left: 2rem;">
+                                <input type="text" id="link-search" placeholder="搜索商品或商品ID..." class="w-full px-4 py-2 pl-10 border-2 border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700 placeholder-gray-400" style="padding-left: 2rem;">
                                 <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                             </div>
                             <div class="flex items-center space-x-2 flex-wrap gap-2">
@@ -23372,7 +23382,7 @@ ${shopsMap[link.shopId]}
                         <div class="flex items-center space-x-2">
                             <button id="add-link" class="px-4 py-2.5 rounded-xl bg-[#0066FF] text-white flex items-center space-x-2 shadow-[5px_5px_10px_#0047b3,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#0047b3,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="openAddLinkModal()">
                                 <i class="fa fa-plus"></i>
-                                <span>新增链接</span>
+                                <span>新增商品</span>
                             </button>
                             <button id="collapse-all-links" class="w-10 h-10 rounded-xl bg-gray-100 text-black flex items-center justify-center shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="collapseAllLinks()" title="全部收起">
                                 <i class="fa fa-compress"></i>
@@ -23417,7 +23427,7 @@ ${shopsMap[link.shopId]}
 
                     <div id="links-empty" class="text-center py-8 text-gray-500">
                         <i class="fa fa-info-circle text-3xl mb-2"></i>
-                        <p>暂无链接，请添加</p>
+                        <p>暂无商品，请添加</p>
                     </div>
 
                 </div>
@@ -23430,7 +23440,7 @@ ${shopsMap[link.shopId]}
 
                     <div id="display-links-empty" class="text-center py-8 text-gray-500">
                         <i class="fa fa-info-circle text-3xl mb-2"></i>
-                        <p>暂无链接可展示</p>
+                        <p>暂无商品可展示</p>
                     </div>
                 </div>
 
