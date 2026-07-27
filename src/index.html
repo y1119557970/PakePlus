@@ -1,4 +1,4 @@
-﻿<html lang="zh-CN"><head>
+<html lang="zh-CN"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://www.gstatic.com https://apis.google.com https://lf6-cdn-tpc.byteimg.com https://lf3-cdn-tpc.byteimg.com https://lf26-cdn-tpc.byteimg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https: wss: blob:;">
@@ -8029,13 +8029,13 @@
                 min-width: 180px;
             }
             .btn {
-                @apply px-4 py-2 rounded-md font-medium transition-all-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+                @apply px-4 py-2 rounded-xl font-medium transition-all-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
             }
             .btn-primary {
                 @apply bg-primary text-white hover:bg-primary/90 focus:ring-primary/50;
             }
             .btn-secondary {
-                @apply bg-gray-300 text-dark hover:bg-gray-400 focus:ring-gray-300/50;
+                @apply bg-gray-200 text-black hover:bg-gray-300 focus:ring-gray-200/50;
             }
             .btn-success {
                 @apply bg-success text-white hover:bg-success/90 focus:ring-success/50;
@@ -10711,7 +10711,7 @@
                             <div class="settings-content-panel p-8 flex flex-col min-h-[300px]">
                                 <div class="mb-8 flex flex-col items-center">
                                     <img id="about-software-logo" src="images/weice_logo.png" alt="未策" class="h-36 mb-4">
-                                    <p class="text-lg text-black font-bold">版本：V1.1.7</p>
+                                    <p class="text-lg text-black font-bold">版本：V1.1.8</p>
                                 </div>
                                 <div class="mt-6">
                                     <div class="flex justify-center space-x-6 items-center">
@@ -23229,7 +23229,7 @@ ${shopsMap[link.shopId]}
                             <i class="fa fa-plus"></i>
                             <span>添加规格</span>
                         </button>
-                        <button id="batch-delete-skus" class="px-4 py-2.5 rounded-xl bg-red-500 text-white flex items-center space-x-2 shadow-[5px_5px_10px_#c53030,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#c53030,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" disabled="">
+                        <button id="batch-delete-skus" class="hidden px-4 py-2.5 rounded-xl bg-red-500 text-white items-center space-x-2 shadow-[5px_5px_10px_#c53030,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#c53030,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
                             <i class="fa fa-trash"></i>
                             <span>批量删除</span>
                         </button>
@@ -29170,6 +29170,14 @@ ${shopsMap[link.shopId]}
                 document.getElementById('sku-cost').value = '0';
                 document.getElementById('sku-note').value = '';
 
+                document.getElementById('copy-referenced-costs').classList.add('hidden');
+                const pasteBtn = document.getElementById('paste-referenced-costs');
+                if (_copiedReferencedCosts && _copiedReferencedCosts.length > 0) {
+                    pasteBtn.classList.remove('hidden');
+                } else {
+                    pasteBtn.classList.add('hidden');
+                }
+
                 updateTotalCostPreview();
             });
 
@@ -33171,10 +33179,16 @@ ${shopsMap[link.shopId]}
             function updateBatchDeleteButton() {
                 const selectedCount = document.querySelectorAll('.sku-checkbox:checked').length;
                 if (batchDeleteBtn) {
-                    batchDeleteBtn.disabled = selectedCount === 0;
-                    batchDeleteBtn.innerHTML = selectedCount > 0
-                        ? `<i class="fa fa-trash"></i> 批量删除 (${selectedCount})`
-                        : '<i class="fa fa-trash"></i> 批量删除';
+                    if (selectedCount > 0) {
+                        batchDeleteBtn.classList.remove('hidden');
+                        batchDeleteBtn.classList.add('flex');
+                        batchDeleteBtn.disabled = false;
+                        batchDeleteBtn.innerHTML = `<i class="fa fa-trash"></i> 批量删除 (${selectedCount})`;
+                    } else {
+                        batchDeleteBtn.classList.add('hidden');
+                        batchDeleteBtn.classList.remove('flex');
+                        batchDeleteBtn.disabled = true;
+                    }
                 }
             }
 
@@ -33267,6 +33281,8 @@ ${shopsMap[link.shopId]}
                             if (sku.referencedCosts && sku.referencedCosts.length > 0) {
                                 sku.referencedCosts.forEach(ref => addReferencedCostItem(ref.costType, ref.costId, ref.quantity));
                             }
+                            document.getElementById('copy-referenced-costs').classList.remove('hidden');
+                            document.getElementById('paste-referenced-costs').classList.add('hidden');
                             updateTotalCostPreview();
                         }
                     }
@@ -36516,6 +36532,46 @@ ${shopsMap[link.shopId]}
             accessory: '产品成本'
         };
 
+        let _copiedReferencedCosts = null;
+
+        function copyReferencedCosts() {
+            const container = document.getElementById('referenced-costs-container');
+            const items = [];
+            for (let i = 0; i < container.children.length; i++) {
+                const item = container.children[i];
+                const costType = getCustomSelectValue(item, 'cost-type-select');
+                const costId = getCustomSelectValue(item, 'cost-item-select');
+                const quantity = parseInt(item.querySelector('.quantity-input').value) || 1;
+                if (costType && costId) {
+                    items.push({ costType, costId, quantity });
+                }
+            }
+            if (items.length === 0) {
+                showToast('没有可复制的引用成本项目', 'warning');
+                return;
+            }
+            _copiedReferencedCosts = items;
+            showToast(`已复制 ${items.length} 个引用成本项目`, 'success');
+            // 有复制内容时，在添加模式下也显示粘贴按钮
+            const pasteBtn = document.getElementById('paste-referenced-costs');
+            const modalTitle = document.querySelector('#add-sku-modal h3');
+            if (pasteBtn && modalTitle && modalTitle.textContent === '添加规格成本') {
+                pasteBtn.classList.remove('hidden');
+            }
+        }
+
+        function pasteReferencedCosts() {
+            if (!_copiedReferencedCosts || _copiedReferencedCosts.length === 0) {
+                showToast('没有可粘贴的引用成本项目', 'warning');
+                return;
+            }
+            _copiedReferencedCosts.forEach(ref => {
+                addReferencedCostItem(ref.costType, ref.costId, ref.quantity);
+            });
+            updateTotalCostPreview();
+            showToast(`已粘贴 ${_copiedReferencedCosts.length} 个引用成本项目`, 'success');
+        }
+
         function addReferencedCostItem(costType = 'express', costId = '', quantity = 1, index = null) {
             const container = document.getElementById('referenced-costs-container');
             const itemIndex = index !== null ? index : container.children.length;
@@ -36533,7 +36589,7 @@ ${shopsMap[link.shopId]}
                     ${costItemSelectHTML}
                     <input type="number" class="quantity-input input-field w-20" value="${quantity}" min="1" onchange="onQuantityChange(this, ${itemIndex})" placeholder="数量">
                     <span class="item-total-cost text-sm font-medium">¥0.00</span>
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeReferencedCostItem(${itemIndex})">
+                    <button type="button" class="btn btn-sm btn-danger w-8 h-8 !px-0 flex items-center justify-center" onclick="removeReferencedCostItem(${itemIndex})">
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
@@ -36564,6 +36620,12 @@ ${shopsMap[link.shopId]}
             loadCostItems(costType, itemIndex, costId);
 
             updateItemTotalCost(itemIndex);
+
+            if (index === null) {
+                requestAnimationFrame(() => {
+                    container.scrollTop = container.scrollHeight;
+                });
+            }
         }
 
         function loadCostItems(costType, index, selectedCostId = '') {
@@ -36677,6 +36739,20 @@ ${shopsMap[link.shopId]}
         function removeReferencedCostItem(index) {
             console.log('removeReferencedCostItem 被调用');
             const container = document.getElementById('referenced-costs-container');
+            const item = container.children[index];
+
+            if (item) {
+                item.querySelectorAll('.custom-select-wrap').forEach(w => {
+                    if (w._detachedDropdown) {
+                        w.classList.remove('cs-open');
+                        if (w._detachedDropdown && w._detachedDropdown.parentNode) {
+                            w._detachedDropdown.parentNode.removeChild(w._detachedDropdown);
+                        }
+                        w._detachedDropdown = null;
+                    }
+                });
+            }
+
             container.children[index].remove();
 
             for (let i = 0; i < container.children.length; i++) {
@@ -43495,10 +43571,20 @@ ${shopsMap[link.shopId]}
                 <div class="mb-4">
                     <div class="flex justify-between items-center mb-2">
                         <label class="block text-sm font-medium text-gray-700">引用成本项目</label>
-                        <button type="button" id="add-referenced-cost" class="btn btn-sm btn-secondary flex items-center space-x-1">
-                            <i class="fa fa-plus"></i>
-                            <span>添加项目</span>
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" id="copy-referenced-costs" class="btn btn-sm btn-secondary flex items-center space-x-1 hidden" onclick="copyReferencedCosts()">
+                                <i class="fa fa-copy"></i>
+                                <span>复制列表</span>
+                            </button>
+                            <button type="button" id="paste-referenced-costs" class="btn btn-sm btn-secondary flex items-center space-x-1 hidden" onclick="pasteReferencedCosts()">
+                                <i class="fa fa-paste"></i>
+                                <span>粘贴列表</span>
+                            </button>
+                            <button type="button" id="add-referenced-cost" class="btn btn-sm btn-secondary flex items-center space-x-1">
+                                <i class="fa fa-plus"></i>
+                                <span>添加项目</span>
+                            </button>
+                        </div>
                     </div>
                     <div id="referenced-costs-container" class="space-y-2 max-h-60 overflow-y-auto pr-2">
 
