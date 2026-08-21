@@ -80,6 +80,18 @@
             background-image: none !important;
         }
         html, body { margin: 0; padding: 0; }
+        /* .no-t 用于主题切换时临时禁用过渡 */
+        .no-t, .no-t *, .no-t::before, .no-t::after {
+            transition: none !important;
+            animation: none !important;
+        }
+        /* 主题切换时禁用所有过渡（通过 body class） */
+        /* 使用双 rAF 确保主题切换在同一帧完成后立即恢复过渡 */
+        body.theme-switching *,
+        body.theme-switching *::before,
+        body.theme-switching *::after {
+            transition: none !important;
+        }
         body, input, select, textarea, button, span, div, p, h1, h2, h3, h4, h5, h6, a, label, th, td, li, ul, ol {
             font-family: 'Poppins', 'Inter', system-ui, sans-serif;
         }
@@ -136,7 +148,10 @@
         }
     </script>
     <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff?v=4.7.0" as="font" type="font/woff" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 验证 Tailwind 是否正确处理了样式
@@ -169,6 +184,156 @@
         }
         .animate-fadeIn {
             animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        /* ===== Welcome Page Entrance Animation ===== */
+        .welcome-page-content {
+            opacity: 0;
+        }
+        .welcome-page-content.visible {
+            opacity: 1;
+        }
+        .welcome-page-content .welcome-nav-content {
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.6s ease-out 0.05s, transform 0.6s ease-out 0.05s;
+        }
+        .welcome-page-content.visible .welcome-nav-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome-page-content .flex-1 {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out 0.15s, transform 0.8s ease-out 0.15s;
+        }
+        .welcome-page-content.visible .flex-1 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome-page-content .flex-1 h1 {
+            opacity: 0;
+            transition: opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s;
+            transform: translateY(10px);
+        }
+        .welcome-page-content.visible .flex-1 h1 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome-page-content .flex-1 p {
+            opacity: 0;
+            transition: opacity 0.6s ease-out 0.45s, transform 0.6s ease-out 0.45s;
+            transform: translateY(8px);
+        }
+        .welcome-page-content.visible .flex-1 p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome-page-content .flex-1 button {
+            opacity: 0;
+            transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s;
+            transform: translateY(10px);
+        }
+        .welcome-page-content.visible .flex-1 button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .welcome-page-content .welcome-nav-glass img {
+            opacity: 0;
+            transition: opacity 0.5s ease-out 0.1s;
+        }
+        .welcome-page-content.visible .welcome-nav-glass img {
+            opacity: 1;
+        }
+        .welcome-page-content .welcome-nav-title {
+            opacity: 0;
+            transition: opacity 0.5s ease-out 0.15s;
+        }
+        .welcome-page-content.visible .welcome-nav-title {
+            opacity: 1;
+        }
+        .welcome-page-content .welcome-nav-register-btn {
+            opacity: 0;
+            transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+            transform: scale(0.95);
+        }
+        .welcome-page-content.visible .welcome-nav-register-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* ===== Shared Aurora Background (Welcome + Auth, persistent) ===== */
+        #auth-aurora-bg {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+        #auth-aurora-bg.visible {
+            opacity: 1;
+        }
+        #auth-aurora-bg .aurora-container {
+            opacity: 0;
+            transition: opacity 1.2s ease-out;
+        }
+        #auth-aurora-bg.visible .aurora-container {
+            opacity: 1;
+        }
+        #auth-aurora-bg .aurora-page-bg {
+            opacity: 0;
+            transition: opacity 0.8s ease-out 0.1s;
+        }
+        #auth-aurora-bg.visible .aurora-page-bg {
+            opacity: 1;
+        }
+        /* ===== Auth Pages (Login/Register/Forgot) Content Animation ===== */
+        .auth-page-content {
+            opacity: 0;
+        }
+        .auth-page-content.visible {
+            opacity: 1;
+        }
+        .auth-page-content .auth-left-text {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.7s ease-out 0.05s, transform 0.7s ease-out 0.05s;
+        }
+        .auth-page-content.visible .auth-left-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .auth-page-content .auth-left-text h1 {
+            opacity: 0;
+            transition: opacity 0.6s ease-out 0.1s;
+        }
+        .auth-page-content.visible .auth-left-text h1 {
+            opacity: 1;
+        }
+        .auth-page-content .auth-left-text p {
+            opacity: 0;
+            transition: opacity 0.6s ease-out 0.2s;
+        }
+        .auth-page-content.visible .auth-left-text p {
+            opacity: 1;
+        }
+        /* After first play: text stays visible, no animation replay */
+        .auth-page-content.text-persistent .auth-left-text,
+        .auth-page-content.text-persistent .auth-left-text h1,
+        .auth-page-content.text-persistent .auth-left-text p {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+        .auth-page-content .auth-glass-card {
+            opacity: 0;
+            transform: scale(0.9) translateY(15px) !important;
+            transition: opacity 0.8s ease-out 0.05s, transform 0.8s ease-out 0.05s;
+        }
+        .auth-page-content.visible .auth-glass-card {
+            opacity: 1;
+            transform: scale(0.9) translateY(0) !important;
+            animation: cardScaleAuth 0.5s ease-out 0.7s forwards;
+        }
+        @keyframes cardScaleAuth {
+            to {
+                transform: scale(1) translateY(0) !important;
+            }
         }
 
         html, body {
@@ -233,13 +398,13 @@
 
         .purchase-dropdown {
             min-width: 0;
-            background: linear-gradient(135deg, rgba(241, 245, 249, 0.99) 0%, rgba(248, 250, 252, 0.99) 100%);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 16px;
-            backdrop-filter: blur(30px) saturate(1.5);
-            -webkit-backdrop-filter: blur(30px) saturate(1.5);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.99);
-            padding: 4px;
+            backdrop-filter: blur(14px) saturate(1.4);
+            -webkit-backdrop-filter: blur(14px) saturate(1.4);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            padding: 6px;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -260,11 +425,11 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 8px 10px;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
             font-size: 13px;
             font-weight: 500;
-            color: #94a3b8;
+            color: #64748b;
             transition: all 0.2s ease;
             white-space: nowrap;
             text-align: center;
@@ -274,20 +439,21 @@
         }
 
         .purchase-dropdown-item:hover {
-            color: #000000;
+            color: #0f172a;
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .purchase-dropdown-item.active {
-            background: #ffffff;
-            color: var(--primary, #3b82f6);
+            background: rgba(255, 255, 255, 0.8);
+            color: #4f46e5;
             font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
         }
 
         .dark .purchase-dropdown {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.99) 0%, rgba(15, 23, 42, 0.99) 100%);
-            border-color: rgba(100, 116, 139, 0.3);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.35);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .dark .purchase-dropdown-item {
@@ -296,12 +462,13 @@
 
         .dark .purchase-dropdown-item:hover {
             color: #f1f5f9;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .dark .purchase-dropdown-item.active {
-            background: #334155;
-            color: #60a5fa;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+            background: rgba(99, 102, 241, 0.25);
+            color: #a5b4fc;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(99, 102, 241, 0.2);
         }
 
         .results-tab-switcher {
@@ -2117,20 +2284,41 @@
     </script>
 
     <script>
+    // 关键修复: 移除 #main-nav / #notes 淡入动画后的合成组
+    // animate-fadeIn 的 animation 属性会在父元素上创建持久 GPU 合成组，
+    // 导致子元素的 backdrop-filter 无法捕获导航栏后面的内容
+    document.addEventListener('animationend', function(e) {
+        if (e.target && e.animationName === 'fadeIn') {
+            if (e.target.id === 'main-nav' || e.target.id === 'notes') {
+                e.target.classList.remove('animate-fadeIn');
+            }
+        }
+    });
+    // 兜底: 即使 animationend 未触发，也强制在 1 秒后移除
+    setInterval(function() {
+        var nav = document.getElementById('main-nav');
+        if (nav && nav.classList.contains('animate-fadeIn')) {
+            var computed = window.getComputedStyle(nav);
+            if (computed.animationName === 'none' || computed.animationName === '') {
+                nav.classList.remove('animate-fadeIn');
+            } else {
+                setTimeout(function() { nav.classList.remove('animate-fadeIn'); }, 1000);
+            }
+        }
+    }, 1000);
+
     // Theme Toggle
     window.toggleTheme = function() {
         const html = document.documentElement;
         const isDark = html.classList.contains('dark');
+        const body = document.body;
 
-        const smooth = document.createElement('style');
-        smooth.id = 'smooth-theme-transition';
-        smooth.textContent = '*, *::before, *::after { transition: none !important; }';
-        document.head.appendChild(smooth);
+        // 使用 body.theme-switching 全局禁用所有元素的过渡
+        // 比单独处理每个元素更可靠
+        body.classList.add('theme-switching');
 
         if (isDark) {
             html.classList.remove('dark');
-            document.body.style.backgroundColor = '';
-            document.documentElement.style.backgroundColor = '';
             localStorage.setItem('theme', 'light');
         } else {
             html.classList.add('dark');
@@ -2156,13 +2344,271 @@
             renderDashboardCharts();
         }
 
-        setTimeout(() => { smooth.remove(); }, 50);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                body.classList.remove('theme-switching');
+            });
+        });
     };
 
     window.toggleBgFx = function() {
         document.body.classList.toggle('bg-fx-off');
         localStorage.setItem('bgFx', document.body.classList.contains('bg-fx-off') ? 'off' : 'on');
     };
+
+    /* ===== Aurora WebGL Background (1:1 port of reactbits.dev Aurora) ===== */
+    (function() {
+        const VERT = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}`;
+        const FRAG = `#version 300 es
+precision highp float;
+uniform float uTime;
+uniform float uAmplitude;
+uniform vec3 uColorStops[3];
+uniform vec2 uResolution;
+uniform float uBlend;
+out vec4 fragColor;
+
+vec3 permute(vec3 x) {
+  return mod(((x * 34.0) + 1.0) * x, 289.0);
+}
+
+float snoise(vec2 v){
+  const vec4 C = vec4(
+      0.211324865405187, 0.366025403784439,
+      -0.577350269189626, 0.024390243902439
+  );
+  vec2 i  = floor(v + dot(v, C.yy));
+  vec2 x0 = v - i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute(
+      permute(i.y + vec3(0.0, i1.y, 1.0))
+    + i.x + vec3(0.0, i1.x, 1.0)
+  );
+  vec3 m = max(
+      0.5 - vec3(
+          dot(x0, x0),
+          dot(x12.xy, x12.xy),
+          dot(x12.zw, x12.zw)
+      ),
+      0.0
+  );
+  m = m * m;
+  m = m * m;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+struct ColorStop {
+  vec3 color;
+  float position;
+};
+
+#define COLOR_RAMP(colors, factor, finalColor) {                int index = 0;                                              for (int i = 0; i < 2; i++) {                                    ColorStop currentColor = colors[i];                         bool isInBetween = currentColor.position <= factor;         index = int(mix(float(index), float(i), float(isInBetween)));   }                                                           ColorStop currentColor = colors[index];                     ColorStop nextColor = colors[index + 1];                    float range = nextColor.position - currentColor.position;   float lerpFactor = (factor - currentColor.position) / range;   finalColor = mix(currentColor.color, nextColor.color, lerpFactor); }
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / uResolution;
+
+  ColorStop colors[3];
+  colors[0] = ColorStop(uColorStops[0], 0.0);
+  colors[1] = ColorStop(uColorStops[1], 0.5);
+  colors[2] = ColorStop(uColorStops[2], 1.0);
+
+  vec3 rampColor;
+  COLOR_RAMP(colors, uv.x, rampColor);
+
+  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
+  height = exp(height);
+  height = (uv.y * 2.0 - height + 0.2);
+  float intensity = 0.85 * height;
+
+  float midPoint = 0.18;
+  float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
+
+  float colorNoise = snoise(vec2(uv.x * 3.0 - uTime * 0.15, uv.y * 2.0 + uTime * 0.1));
+  vec3 auroraColor = intensity * 1.26 * rampColor * (0.85 + 0.15 * colorNoise);
+
+  fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+}`;
+
+    function hexToRgb(hex) {
+        const h = hex.replace('#', '');
+        const n = parseInt(h, 16);
+        return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+    }
+
+    function compileShader(gl, type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            console.warn('Aurora shader compile error:', gl.getShaderInfoLog(s));
+            return null;
+        }
+        return s;
+    }
+
+    function initAurora(el, opts) {
+        if (!el || el.__auroraInitialized) return;
+        el.__auroraInitialized = true;
+        opts = opts || {};
+        const colorStops = (opts.colorStops || ['#3B82F6', '#06B6D4', '#27ffe9']).map(hexToRgb);
+        const speed = opts.speed || 1.0;
+        const amplitude = opts.amplitude || 1.0;
+        const blend = opts.blend == null ? 0.8 : opts.blend;
+
+        const canvas = document.createElement('canvas');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.display = 'block';
+        canvas.style.backgroundColor = 'transparent';
+        el.appendChild(canvas);
+
+        const gl = canvas.getContext('webgl2', {
+            alpha: true,
+            premultipliedAlpha: false,
+            antialias: false,
+            powerPreference: 'high-performance'
+        });
+        if (!gl) {
+            el.__auroraInitialized = false;
+            el.removeChild(canvas);
+            return;
+        }
+
+        gl.clearColor(0, 0, 0, 0);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+        const vs = compileShader(gl, gl.VERTEX_SHADER, VERT);
+        const fs = compileShader(gl, gl.FRAGMENT_SHADER, FRAG);
+        if (!vs || !fs) { el.__auroraInitialized = false; return; }
+        const prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.bindAttribLocation(prog, 0, 'position');
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+            console.warn('Aurora link error:', gl.getProgramInfoLog(prog));
+            el.__auroraInitialized = false;
+            return;
+        }
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+
+        const posLoc = gl.getAttribLocation(prog, 'position');
+        gl.enableVertexAttribArray(posLoc);
+        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const uTime = gl.getUniformLocation(prog, 'uTime');
+        const uAmp = gl.getUniformLocation(prog, 'uAmplitude');
+        const uColor = gl.getUniformLocation(prog, 'uColorStops');
+        const uRes = gl.getUniformLocation(prog, 'uResolution');
+        const uBlendLoc = gl.getUniformLocation(prog, 'uBlend');
+
+        function resize() {
+            const w = el.clientWidth || el.offsetWidth;
+            const h = el.clientHeight || el.offsetHeight;
+            if (!w || !h) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const cw = Math.floor(w * dpr);
+            const ch = Math.floor(h * dpr);
+            if (canvas.width !== cw || canvas.height !== ch) {
+                canvas.width = cw;
+                canvas.height = ch;
+            }
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+        }
+
+        let rafId = 0;
+        let start = performance.now();
+        let running = true;
+
+        function render(t) {
+            if (!running) return;
+            const time = (t - start) * 0.01;
+            gl.uniform1f(uTime, time * speed * 0.1);
+            gl.uniform1f(uAmp, amplitude);
+            gl.uniform1f(uBlendLoc, blend);
+            const flat = [];
+            colorStops.forEach(c => flat.push(c[0], c[1], c[2]));
+            gl.uniform3fv(uColor, flat);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.useProgram(prog);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+            rafId = requestAnimationFrame(render);
+        }
+
+        resize();
+        rafId = requestAnimationFrame(render);
+
+        const ro = new ResizeObserver(resize);
+        ro.observe(el);
+
+        el._aurora = {
+            destroy: function() {
+                running = false;
+                cancelAnimationFrame(rafId);
+                ro.disconnect();
+                try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch(e) {}
+            },
+            refresh: function() {
+                // restart if previously destroyed
+                if (!running) {
+                    running = true;
+                    start = performance.now();
+                    rafId = requestAnimationFrame(render);
+                }
+                resize();
+            }
+        };
+    }
+
+    window.initAuroraOnElement = function(elOrId, opts) {
+        const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+        if (!el) return;
+        const container = el.classList.contains('aurora-container') ? el : el.querySelector('.aurora-container');
+        if (!container) return;
+        if (!container.__auroraInitialized) {
+            initAurora(container, opts);
+        } else if (container._aurora) {
+            container._aurora.refresh();
+        }
+    };
+
+    window.initAuroraOnVisiblePage = function() {
+        ['auth-aurora-bg'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.classList.contains('hidden')) {
+                window.initAuroraOnElement(id);
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(window.initAuroraOnVisiblePage, 100);
+        });
+    } else {
+        setTimeout(window.initAuroraOnVisiblePage, 100);
+    }
+})();
 
     (function() {
         function applyBgFx() {
@@ -2685,39 +3131,67 @@
         .dark .bg-white { background-color: var(--dm-bg-card) !important; }
         .dark .bg-gray-100 { background-color: var(--dm-bg-elevated) !important; }
 
+        /* ===== Shared Auth Aurora Background Dark Mode ===== */
+        .dark #auth-aurora-bg {
+            background: #0a0f1f !important;
+        }
+        .dark #auth-aurora-bg .aurora-page-bg {
+            background: linear-gradient(to bottom, rgba(10,15,31,0.15) 0%, rgba(10,15,31,0.03) 25%, rgba(10,15,31,0.10) 60%, rgba(10,15,31,0.28) 100%) !important;
+        }
+
+        /* ===== Welcome Page Dark Mode ===== */
+        .dark #welcome-page {
+            background: transparent !important;
+        }
+        .dark #welcome-page .aurora-page-bg {
+            background: linear-gradient(to bottom, rgba(5,8,21,0.1045) 0%, rgba(5,8,21,0) 30%, rgba(5,8,21,0.0836) 70%, rgba(5,8,21,0.209) 100%) !important;
+        }
+        .dark #welcome-page .text-gray-300 {
+            color: #cbd5e1 !important;
+        }
+        .dark #welcome-page .text-gray-400 {
+            color: #94a3b8 !important;
+        }
+
         /* ===== Login Page Dark Mode ===== */
         .dark #login-page {
-            background: linear-gradient(135deg, var(--dm-bg) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+            background: transparent !important;
         }
-        .dark #login-page::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('images/weice_ST.png') no-repeat left center;
-            background-size: cover;
-            opacity: 0.25;
-            z-index: -1;
+        .dark #login-page .aurora-page-bg {
+            background: linear-gradient(to bottom, rgba(5,8,21,0.154) 0%, rgba(5,8,21,0.0308) 25%, rgba(5,8,21,0.1045) 60%, rgba(5,8,21,0.2618) 100%) !important;
         }
-        .dark #login-page > div {
-            background-color: var(--dm-bg-card) !important;
-            border: 1px solid var(--dm-border) !important;
-        }
-        .dark #login-page .text-gray-600 {
+        .dark #login-page .auth-glass-card .text-gray-600 {
             color: var(--dm-text-secondary) !important;
         }
-        .dark #login-page .text-gray-700 {
+        .dark #login-page .auth-glass-card .text-gray-700 {
             color: var(--dm-text) !important;
         }
-        .dark #login-page .input-field {
+        .dark #login-page .auth-glass-card .input-field {
             background-color: var(--dm-bg-elevated) !important;
             border-color: var(--dm-border) !important;
             color: var(--dm-text) !important;
         }
-        .dark #login-page .input-field::placeholder {
+        .dark #login-page .auth-glass-card .input-field::placeholder {
             color: var(--dm-text-muted) !important;
         }
         .dark #login-page #username-dropdown {
-            background-color: var(--dm-bg-card) !important;
+            background: var(--dm-bg-card) !important;
+            border-color: var(--dm-border) !important;
+        }
+        .dark #login-page #username-dropdown .text-gray-700 {
+            color: var(--dm-text) !important;
+        }
+        .dark #login-page #username-dropdown .text-gray-400 {
+            color: var(--dm-text-muted) !important;
+        }
+        .dark #login-page #username-dropdown .hover\:bg-gray-100:hover {
+            background: var(--dm-bg-elevated) !important;
+        }
+        .dark #login-page .auth-glass-card button.text-black {
+            color: #ffffff !important;
+        }
+        .dark #login-page .auth-glass-card button.bg-white {
+            background: var(--dm-bg-elevated) !important;
             border-color: var(--dm-border) !important;
         }
         .dark #login-page .shadow-\[5px_5px_10px_\#1C4FA1\2c -5px_-5px_10px_\#ffffff\] {
@@ -2732,33 +3206,23 @@
 
         /* ===== Forgot Password Modal Dark Mode ===== */
         .dark #forgot-password-modal {
-            background: linear-gradient(135deg, var(--dm-bg) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+            background: transparent !important;
         }
-        .dark #forgot-password-modal::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('images/weice_ST.png') no-repeat left center;
-            background-size: cover;
-            opacity: 0.25;
-            z-index: -1;
+        .dark #forgot-password-modal .aurora-page-bg {
+            background: linear-gradient(to bottom, rgba(5,8,21,0.154) 0%, rgba(5,8,21,0.0308) 25%, rgba(5,8,21,0.1045) 60%, rgba(5,8,21,0.2618) 100%) !important;
         }
-        .dark #forgot-password-modal > div {
-            background-color: var(--dm-bg-card) !important;
-            border: 1px solid var(--dm-border) !important;
-        }
-        .dark #forgot-password-modal .text-gray-600 {
+        .dark #forgot-password-modal .auth-glass-card .text-gray-600 {
             color: var(--dm-text-secondary) !important;
         }
-        .dark #forgot-password-modal .text-gray-700 {
+        .dark #forgot-password-modal .auth-glass-card .text-gray-700 {
             color: var(--dm-text) !important;
         }
-        .dark #forgot-password-modal .input-field {
+        .dark #forgot-password-modal .auth-glass-card .input-field {
             background-color: var(--dm-bg-elevated) !important;
             border-color: var(--dm-border) !important;
             color: var(--dm-text) !important;
         }
-        .dark #forgot-password-modal .input-field::placeholder {
+        .dark #forgot-password-modal .auth-glass-card .input-field::placeholder {
             color: var(--dm-text-muted) !important;
         }
         .dark #forgot-password-modal select.input-field {
@@ -2767,6 +3231,26 @@
         .dark #forgot-password-modal select.input-field option {
             background-color: var(--dm-bg-card) !important;
             color: var(--dm-text) !important;
+        }
+        .dark #forgot-password-modal #forgot-method-dropdown {
+            background: var(--dm-bg-card) !important;
+            border-color: var(--dm-border) !important;
+        }
+        .dark #forgot-password-modal #forgot-method-dropdown .forgot-method-option {
+            color: var(--dm-text) !important;
+        }
+        .dark #forgot-password-modal #forgot-method-dropdown .forgot-method-option:hover {
+            background: var(--dm-bg-elevated) !important;
+        }
+        .dark #forgot-password-modal #forgot-method-dropdown .forgot-method-option.selected {
+            background: var(--dm-bg-elevated) !important;
+        }
+        .dark #forgot-password-modal .auth-glass-card button.text-black {
+            color: #ffffff !important;
+        }
+        .dark #forgot-password-modal .auth-glass-card button.bg-white {
+            background: var(--dm-bg-elevated) !important;
+            border-color: var(--dm-border) !important;
         }
         .dark #forgot-password-modal .shadow-\[5px_5px_10px_\#1C4FA1\2c -5px_-5px_10px_\#ffffff\] {
             box-shadow: 3px 3px 6px rgba(0,0,0,0.4), -3px -3px 6px rgba(30,58,138,0.3) !important;
@@ -2780,34 +3264,31 @@
 
         /* ===== Register Page Dark Mode ===== */
         .dark #register-page {
-            background: linear-gradient(135deg, var(--dm-bg) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+            background: transparent !important;
         }
-        .dark #register-page::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('images/weice_ST.png') no-repeat left center;
-            background-size: cover;
-            opacity: 0.25;
-            z-index: -1;
+        .dark #register-page .aurora-page-bg {
+            background: linear-gradient(to bottom, rgba(5,8,21,0.154) 0%, rgba(5,8,21,0.0308) 25%, rgba(5,8,21,0.1045) 60%, rgba(5,8,21,0.2618) 100%) !important;
         }
-        .dark #register-page > div {
-            background-color: var(--dm-bg-card) !important;
-            border: 1px solid var(--dm-border) !important;
-        }
-        .dark #register-page .text-gray-600 {
+        .dark #register-page .auth-glass-card .text-gray-600 {
             color: var(--dm-text-secondary) !important;
         }
-        .dark #register-page .text-gray-700 {
+        .dark #register-page .auth-glass-card .text-gray-700 {
             color: var(--dm-text) !important;
         }
-        .dark #register-page .input-field {
+        .dark #register-page .auth-glass-card .input-field {
             background-color: var(--dm-bg-elevated) !important;
             border-color: var(--dm-border) !important;
             color: var(--dm-text) !important;
         }
-        .dark #register-page .input-field::placeholder {
+        .dark #register-page .auth-glass-card .input-field::placeholder {
             color: var(--dm-text-muted) !important;
+        }
+        .dark #register-page .auth-glass-card button.text-black {
+            color: #ffffff !important;
+        }
+        .dark #register-page .auth-glass-card button.bg-white {
+            background: var(--dm-bg-elevated) !important;
+            border-color: var(--dm-border) !important;
         }
         .dark #register-page .shadow-\[5px_5px_10px_\#1C4FA1\2c -5px_-5px_10px_\#ffffff\] {
             box-shadow: 3px 3px 6px rgba(0,0,0,0.4), -3px -3px 6px rgba(30,58,138,0.3) !important;
@@ -3456,11 +3937,17 @@
         #todo-sidebar .todo-nav-btn {
             border-radius: 12px !important;
         }
+        /* Active state - light mode */
+        #todo-sidebar .todo-nav-btn.nav-btn-active {
+            background: #f3f4f6 !important;
+            color: #374151 !important;
+        }
+        /* Inactive state - light mode */
+        #todo-sidebar .todo-nav-btn:not(.nav-btn-active) {
+            color: #4b5563 !important;
+        }
         #todo-sidebar .todo-nav-btn .nav-text {
             font-weight: 600 !important;
-        }
-        html:not(.dark) #todo-sidebar .todo-nav-btn:not(.text-primary):not([class*="bg-primary"]) .nav-text {
-            color: #000000 !important;
         }
         /* Sidebar Collapse Styles */
         #todo-sidebar {
@@ -3578,26 +4065,29 @@
         }
         /* End Sidebar Collapse Styles */
         /* Todo section dark mode */
+        .dark #todo-sidebar,
         .dark .todo-sidebar {
             background: #1e293b !important;
             border: none !important;
             box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
         }
-        .dark .todo-nav-btn {
-            color: #94a3b8 !important;
+        /* Default state - dark mode */
+        .dark #todo-sidebar .todo-nav-btn {
+            color: var(--dm-text-secondary) !important;
             background: transparent !important;
             box-shadow: none !important;
         }
-        .dark .todo-nav-btn:hover {
-            background: rgba(255,255,255,0.08) !important;
-            color: #ffffff !important;
+        /* Hover state - dark mode */
+        .dark #todo-sidebar .todo-nav-btn:hover {
+            background: rgba(255,255,255,0.06) !important;
+            color: var(--dm-text) !important;
             box-shadow: none !important;
         }
-        .dark .todo-nav-btn.text-white,
-        .dark .todo-nav-btn[style*="background: rgba(255,255,255,0.1)"] {
-            color: #ffffff !important;
-            background: rgba(255,255,255,0.1) !important;
-            box-shadow: none !important;
+        /* Active state - dark mode */
+        .dark #todo-sidebar .todo-nav-btn.nav-btn-active {
+            color: var(--dm-text) !important;
+            background: rgba(255,255,255,0.06) !important;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1) !important;
         }
         .dark #sidebar-toggle-btn {
             background: transparent !important;
@@ -3753,20 +4243,43 @@
             cursor: pointer;
             transition: all 0.2s ease;
             border: 1px solid transparent;
+            color: #374151;
+        }
+        .task-group-item i,
+        .task-group-item .fa {
+            color: #6b7280;
         }
         .task-group-item:hover {
             background: #f3f4f6;
         }
         .task-group-item.active {
-            background: #f0f4ff;
-            border-color: #3b82f6;
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+        .task-group-item.active i,
+        .task-group-item.active .fa {
+            color: #374151;
+        }
+        .dark .task-group-item {
+            color: var(--dm-text-secondary);
+        }
+        .dark .task-group-item i,
+        .dark .task-group-item .fa {
+            color: var(--dm-text-secondary);
         }
         .dark .task-group-item:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.06);
+            color: var(--dm-text);
         }
         .dark .task-group-item.active {
-            background: rgba(59,130,246,0.1);
-            border-color: #3b82f6;
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+            color: var(--dm-text);
+        }
+        .dark .task-group-item.active i,
+        .dark .task-group-item.active .fa {
+            color: var(--dm-text);
         }
         /* 3D Card Carousel - Cover Flow Style */
         #task-carousel {
@@ -6737,6 +7250,12 @@
             box-shadow: 2px 2px 5px rgba(0,0,0,0.5), -1px -1px 3px rgba(71,85,105,0.15) !important;
             border: 1px solid var(--dm-border) !important;
         }
+        .dark button[onclick="batchLoadByDateRange()"] {
+            background-color: var(--dm-bg-elevated) !important;
+            color: var(--dm-text-secondary) !important;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5), -1px -1px 3px rgba(71,85,105,0.15) !important;
+            border: none !important;
+        }
         .dark #batch-load-btn:hover,
         .dark #batch-cancel-btn:hover,
         .dark #recycle-bin-btn:hover {
@@ -6744,9 +7263,18 @@
             color: var(--dm-text) !important;
             box-shadow: 1px 1px 3px rgba(0,0,0,0.5), -1px -1px 2px rgba(71,85,105,0.15) !important;
         }
+        .dark button[onclick="batchLoadByDateRange()"]:hover {
+            background-color: #475569 !important;
+            color: var(--dm-text) !important;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.5), -1px -1px 2px rgba(71,85,105,0.15) !important;
+        }
         .dark #batch-load-btn:active,
         .dark #batch-cancel-btn:active,
         .dark #recycle-bin-btn:active {
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5), inset -1px -1px 2px rgba(71,85,105,0.1) !important;
+            transform: translateY(0);
+        }
+        .dark button[onclick="batchLoadByDateRange()"]:active {
             box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5), inset -1px -1px 2px rgba(71,85,105,0.1) !important;
             transform: translateY(0);
         }
@@ -6775,8 +7303,8 @@
 
         /* ===== Batch selection mode ===== */
         .dark #batch-selection-header {
-            background-color: rgba(59,130,246,0.1) !important;
-            border: 1px solid rgba(59,130,246,0.25) !important;
+            background-color: rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
         }
         .dark #batch-selection-header .text-gray-700 { color: var(--dm-text) !important; }
         .dark #batch-selection-header .text-gray-600 { color: var(--dm-text-secondary) !important; }
@@ -7384,14 +7912,6 @@
             background-color: var(--dm-bg-elevated) !important;
             border-color: var(--dm-border) !important;
         }
-        .dark .todo-nav-btn.text-gray-700 { color: var(--dm-text-secondary) !important; }
-        .dark .todo-nav-btn.text-primary,
-        .dark .todo-nav-btn[class*="bg-primary/10"] {
-            color: #60a5fa !important;
-            background: rgba(59,130,246,0.12) !important;
-            box-shadow: none !important;
-        }
-
         /* ===== Purchase registration form ===== */
         .dark #purchase-management .card { background-color: var(--dm-bg-card) !important; }
         .dark #purchase-management .card h3 { color: var(--dm-text) !important; }
@@ -14218,8 +14738,7 @@
             position: relative;
             box-shadow:
                 0 4px 16px rgba(0,0,0,0.08),
-                0 1px 4px rgba(0,0,0,0.04),
-                0 0 0 1px rgba(0,0,0,0.015);
+                0 1px 4px rgba(0,0,0,0.04);
         }
 
         .liquid-glass-panel::before {
@@ -14246,8 +14765,7 @@
         .dark .liquid-glass-panel {
             box-shadow:
                 0 8px 32px rgba(0,0,0,0.35),
-                0 2px 8px rgba(0,0,0,0.2),
-                0 0 0 1px rgba(255,255,255,0.05);
+                0 2px 8px rgba(0,0,0,0.2);
         }
 
         .dark .liquid-glass-panel::before {
@@ -14259,15 +14777,200 @@
                 inset 2px 2px 0.5px rgba(255,255,255,0.08),
                 inset -1.5px -1.5px 1px rgba(255,255,255,0.03);
         }
+
+        /* Ensure logo images keep original colors */
+        .liquid-glass-panel img,
+        .welcome-nav-glass img,
+        #logo-glass img {
+            mix-blend-mode: normal !important;
+            isolation: isolate;
+            filter: none !important;
+        }
+
+        /* ===== Welcome Page Nav Glass ===== */
+        .welcome-nav-glass {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: none;
+            border-radius: 20px;
+            box-shadow: none;
+            min-width: 800px;
+            max-width: calc(100vw - 32px);
+            height: 56px;
+            overflow: hidden;
+            padding: 0 12px !important;
+        }
+        .welcome-nav-glass::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.14) 100%);
+        }
+        .welcome-nav-glass::after {
+            box-shadow:
+                inset 1px 1px 0.5px rgba(255,255,255,0.3),
+                inset -1px -1px 0.5px rgba(255,255,255,0.15);
+        }
+        .welcome-nav-title {
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .welcome-nav-register-btn {
+            border-radius: 16px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0 24px;
+            margin: -7px 0;
+        }
+        .welcome-nav-register-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .dark .welcome-nav-glass {
+            background: rgba(15,23,42,0.45);
+            border: none;
+            box-shadow: none;
+        }
+        .dark .welcome-nav-glass::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 100%);
+        }
+        .dark .welcome-nav-glass::after {
+            box-shadow:
+                inset 1px 1px 0.5px rgba(255,255,255,0.1),
+                inset -1px -1px 0.5px rgba(0,0,0,0.06);
+        }
+
+        /* ===== Auth Glass Card (Login/Register/Forgot) ===== */
+        .auth-glass-card {
+            background: rgba(255,255,255,0.14);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: none;
+            border-radius: 32px;
+            box-shadow: none;
+        }
+        .auth-glass-card::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.14) 100%);
+        }
+        .auth-glass-card::after {
+            box-shadow:
+                inset 1px 1px 0.5px rgba(255,255,255,0.3),
+                inset -1px -1px 0.5px rgba(255,255,255,0.15);
+        }
+        .auth-glass-card .text-gray-700 {
+            color: rgba(255,255,255,0.9) !important;
+        }
+        .auth-glass-card .text-gray-600 {
+            color: rgba(255,255,255,0.75) !important;
+        }
+        .auth-glass-card .text-gray-500 {
+            color: rgba(255,255,255,0.65) !important;
+        }
+        .auth-glass-card .text-primary {
+            color: #22d3ee !important;
+        }
+        .auth-glass-card #username-dropdown {
+            background: #ffffff !important;
+            border-color: #e5e7eb !important;
+        }
+        .auth-glass-card #username-dropdown .text-gray-700 {
+            color: #1f2937 !important;
+        }
+        .auth-glass-card #username-dropdown .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        .auth-glass-card #username-dropdown .delete-history-item:hover {
+            color: #ef4444 !important;
+        }
+        .auth-glass-card #username-dropdown .hover\:bg-gray-100:hover {
+            background: #f3f4f6 !important;
+        }
+        .auth-glass-card #forgot-method-dropdown {
+            background: #ffffff !important;
+            border-color: #e5e7eb !important;
+        }
+        .auth-glass-card #forgot-method-dropdown .forgot-method-option {
+            color: #1f2937 !important;
+        }
+        .auth-glass-card #forgot-method-dropdown .forgot-method-option:hover {
+            background: #f3f4f6 !important;
+        }
+        .auth-glass-card #forgot-method-dropdown .forgot-method-option.selected {
+            background: #eff6ff !important;
+        }
+        .auth-glass-card #forgot-method-trigger {
+            color: #fff;
+        }
+        .auth-glass-card #forgot-method-trigger #forgot-method-chevron.open {
+            transform: rotate(180deg);
+        }
+        .auth-glass-card .input-field {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+        .auth-glass-card .input-field::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        .auth-glass-card select.input-field option {
+            background: #1e293b;
+            color: #fff;
+        }
+        .dark .auth-glass-card {
+            background: rgba(15,23,42,0.5);
+            border: none;
+        }
+        .dark .auth-glass-card::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 100%);
+        }
+        .dark .auth-glass-card::after {
+            box-shadow:
+                inset 1px 1px 0.5px rgba(255,255,255,0.1),
+                inset -1px -1px 0.5px rgba(0,0,0,0.06);
+        }
     </style>
 
 
 
+    <!-- Welcome Page (First Time) -->
+    <div id="welcome-page" class="welcome-page-content fixed inset-0 flex flex-col z-50 hidden" style="overflow: hidden;">
+        <!-- Top Navigation Bar - Liquid Glass -->
+        <div class="relative z-10 flex justify-center pt-5 px-4 welcome-nav-content">
+            <div class="welcome-nav-glass liquid-glass-panel flex items-center justify-between rounded-3xl">
+                <div class="flex items-center gap-3">
+                    <img src="images/weice_logo3.png" alt="Weice Logo" class="h-8 w-auto">
+                    <span class="welcome-nav-title text-white text-lg font-semibold tracking-wide">Wiseway</span>
+                </div>
+                <button onclick="showRegisterFromWelcome()" class="welcome-nav-register-btn ml-auto bg-transparent text-gray-300 text-[18px] font-bold hover:bg-white/10 transition-colors" style="margin-right: -7px;">
+                    注册
+                </button>
+            </div>
+        </div>
+        <!-- Center Content -->
+        <div class="flex-1 flex flex-col items-center justify-center relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-wide text-center">你的效率工作台</h1>
+            <p class="text-gray-300 text-lg mb-10 text-center max-w-md">让电商运营更高效 · 更智能</p>
+            <button onclick="startFromWelcome()" class="px-12 py-4 bg-white text-gray-800 rounded-[24px] text-lg font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
+                开始工作
+            </button>
+        </div>
+    </div>
+
+    <!-- Shared Auth Aurora Background (persistent across login/register/forgot) -->
+    <div id="auth-aurora-bg" class="fixed inset-0 z-40 hidden" style="background: #050815; overflow: hidden;">
+        <div class="aurora-container" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+        <div class="aurora-page-bg" style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(5,8,21,0.121) 0%, rgba(5,8,21,0.0198) 25%, rgba(5,8,21,0.0825) 60%, rgba(5,8,21,0.231) 100%);pointer-events:none;"></div>
+    </div>
+
     <!-- Login Page -->
-    <div id="login-page" class="fixed inset-0 flex flex-col items-end justify-center z-50 hidden" style="padding-right: 10vw; background: url('images/weice_ST.png') no-repeat left center; background-size: cover;">
-        <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-lg w-full max-w-md p-8 transform transition-all duration-300 hover:shadow-xl" style="margin-right: 10vw;">
+    <div id="login-page" class="auth-page-content fixed inset-0 z-50 hidden" style="overflow: hidden;">
+        <div class="relative z-10 flex items-center justify-between h-full pl-28 pr-16">
+            <div class="text-left max-w-md flex-shrink-0 auth-left-text">
+                <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
+                <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+            </div>
+            <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400">系统登录</h3>
+                <h3 class="text-2xl font-bold text-white">登录</h3>
             </div>
             <div class="space-y-4">
                 <div>
@@ -14294,11 +14997,12 @@
                 </div>
             </div>
             <div class="mt-6">
-                <button onclick="login()" class="w-full py-3 rounded-xl bg-[#2A71E5] text-white flex items-center justify-center shadow-[5px_5px_10px_#1C4FA1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#1C4FA1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-lg">
+                <button onclick="login()" class="w-full py-3 rounded-[16px] bg-white text-black text-lg font-extrabold tracking-wide hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
                     <span>登录</span>
                 </button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Confirm Delete Modal -->
@@ -14348,10 +15052,15 @@
     </div>
 
     <!-- Forgot Password Modal -->
-    <div id="forgot-password-modal" class="fixed inset-0 flex flex-col items-end justify-center z-50 hidden" style="padding-right: 10vw; background: url('images/weice_ST.png') no-repeat left center; background-size: cover;">
-        <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-lg w-full max-w-md p-8 transform transition-all duration-300 hover:shadow-xl" style="margin-right: 10vw;">
+    <div id="forgot-password-modal" class="auth-page-content fixed inset-0 z-50 hidden" style="overflow: hidden;">
+        <div class="relative z-10 flex items-center justify-between h-full pl-28 pr-16">
+            <div class="text-left max-w-md flex-shrink-0 auth-left-text">
+                <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
+                <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+            </div>
+            <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400">找回密码</h3>
+                <h3 class="text-2xl font-bold text-white">找回密码</h3>
             </div>
             <div class="space-y-4">
                 <div>
@@ -14360,10 +15069,22 @@
                 </div>
                 <div>
                     <label for="forgot-method" class="block text-sm font-medium text-gray-700 mb-2">找回方式</label>
-                    <select id="forgot-method" class="input-field">
-                        <option value="email">邮箱</option>
-                        <option value="phone">手机</option>
-                    </select>
+                    <div class="relative">
+                        <div id="forgot-method-trigger" class="input-field flex items-center justify-between cursor-pointer select-none relative" style="padding-right: 2.5rem;">
+                            <span id="forgot-method-selected">邮箱</span>
+                            <svg id="forgot-method-chevron" class="w-4 h-4 opacity-60 transition-transform duration-200 absolute right-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <select id="forgot-method" class="hidden">
+                            <option value="email">邮箱</option>
+                            <option value="phone">手机</option>
+                        </select>
+                        <div id="forgot-method-dropdown" class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg hidden z-10 overflow-hidden">
+                            <div class="max-h-60 overflow-y-auto">
+                                <div class="forgot-method-option px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-value="email">邮箱</div>
+                                <div class="forgot-method-option px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-value="phone">手机</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="forgot-email-field">
                     <label for="forgot-email" class="block text-sm font-medium text-gray-700 mb-2">密保邮箱</label>
@@ -14383,7 +15104,7 @@
                 </div>
             </div>
             <div class="mt-6">
-                <button onclick="resetPassword()" class="w-full py-3 rounded-xl bg-[#2A71E5] text-white flex items-center justify-center shadow-[5px_5px_10px_#1C4FA1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#1C4FA1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-lg">
+                <button onclick="resetPassword()" class="w-full py-3 rounded-[16px] bg-white text-black text-lg font-extrabold tracking-wide hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
                     <span>重置密码</span>
                 </button>
             </div>
@@ -14392,13 +15113,19 @@
             </div>
         </div>
     </div>
+    </div>
 
     <!-- Register Page -->
-    <div id="register-page" class="fixed inset-0 flex flex-col items-end justify-center z-50 hidden" style="padding-right: 10vw; background: url('images/weice_ST.png') no-repeat left center; background-size: cover;">
-        <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-lg w-full max-w-md p-8 transform transition-all duration-300 hover:shadow-xl" style="margin-right: 10vw;">
+    <div id="register-page" class="auth-page-content fixed inset-0 z-50 hidden" style="overflow: hidden;">
+        <div class="relative z-10 flex items-center justify-between h-full pl-28 pr-16">
+            <div class="text-left max-w-md flex-shrink-0 auth-left-text">
+                <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
+                <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+            </div>
+            <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 mb-2">账号注册</h3>
-                <p class="text-gray-600">请创建您的账号</p>
+                <h3 class="text-2xl font-bold text-white mb-2">账号注册</h3>
+                
             </div>
             <div class="space-y-4">
                 <div>
@@ -14423,15 +15150,15 @@
                 </div>
             </div>
             <div class="mt-6">
-                <button onclick="register()" class="w-full py-3 rounded-xl bg-[#00BFA5] text-white flex items-center justify-center shadow-[5px_5px_10px_#008c7a,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#008c7a,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-lg">
+                <button onclick="register()" class="w-full py-3 rounded-[16px] bg-white text-black text-lg font-extrabold tracking-wide hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
                     <span>注册</span>
                 </button>
             </div>
-            <div class="mt-4 flex justify-center space-x-6">
-                <button onclick="showLoginForm()" class="text-sm text-primary hover:text-primary/80 transition-colors">已有账号？立即登录</button>
+            <div class="mt-4 flex justify-center">
                 <button onclick="skipRegistration()" class="text-sm text-gray-500 hover:text-gray-700 transition-colors">暂不注册 直接使用</button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Navigation Tabs -->
@@ -14598,10 +15325,11 @@
             this.svg.appendChild(defs);
             document.body.appendChild(this.svg);
 
-            this.el.style.backdropFilter = 'url(#' + this.id + ') blur(1.0px) saturate(1.5) brightness(1.1)';
-            this.el.style.webkitBackdropFilter = 'url(#' + this.id + ') blur(1.0px) saturate(1.5) brightness(1.1)';
-            this._currentBlur = 1;
-            this._targetBlur = 1;
+            const baseBlur = this.opts.baseBlur || 1;
+            this.el.style.backdropFilter = 'url(#' + this.id + ') blur(' + baseBlur.toFixed(1) + 'px) saturate(1.5) brightness(1.1)';
+            this.el.style.webkitBackdropFilter = 'url(#' + this.id + ') blur(' + baseBlur.toFixed(1) + 'px) saturate(1.5) brightness(1.1)';
+            this._currentBlur = baseBlur;
+            this._targetBlur = baseBlur;
         };
 
         LiquidGlass.prototype._animateBlur = function() {
@@ -14631,7 +15359,7 @@
             const threshold = 120;
 
             this.el.addEventListener('mouseenter', function() {
-                self._targetBlur = 3;
+                self._targetBlur = self.opts.hoverBlur || 3;
                 self._animateBlur();
             });
 
@@ -14653,7 +15381,7 @@
             });
 
             this.el.addEventListener('mouseleave', function(e) {
-                self._targetBlur = 1;
+                self._targetBlur = self.opts.baseBlur || 1;
                 self._animateBlur();
                 const rect = self.el.getBoundingClientRect();
                 const clampX = Math.max(rect.left, Math.min(e.clientX, rect.right));
@@ -14721,8 +15449,16 @@
             const elW = this.el.offsetWidth;
             const elH = this.el.offsetHeight;
             const iyScale = elH / elW;
-            const pillHalfH = (elH / 2) / elW;
-            const pillRadius = pillHalfH;
+            const isRect = this.opts.shape === 'rect';
+            let shapeHalfH, shapeRadius;
+
+            if (isRect) {
+                shapeHalfH = 0.5;
+                shapeRadius = Math.min(0.5, 16 / Math.min(elW, elH));
+            } else {
+                shapeHalfH = (elH / 2) / elW;
+                shapeRadius = shapeHalfH;
+            }
 
             for (let i = 0; i < data.length; i += 4) {
                 const px = (i / 4) % w;
@@ -14732,7 +15468,7 @@
                 const ix = uvx - hw;
                 const iy = (uvy - hh) * iyScale;
 
-                const dist = roundedRectSDF(ix, iy, 0.49, pillHalfH, pillRadius);
+                const dist = roundedRectSDF(ix, iy, 0.49, shapeHalfH, shapeRadius);
                 const edgeFactor = smoothStep(0.02, -0.014, dist);
                 const scaled = 0.7 + edgeFactor * 0.2;
 
@@ -14821,6 +15557,12 @@
                     requestAnimationFrame(function() { window._initSettingsIndicator(); });
                 }
             } else if (tabId === 'notes') {
+                const notesEl = document.getElementById('notes');
+                if (notesEl) {
+                    notesEl.style.opacity = '0';
+                    notesEl.style.transition = 'opacity 0.5s ease-in-out';
+                    requestAnimationFrame(() => { notesEl.style.opacity = '1'; });
+                }
                 // 切换到待办页前先隐藏3D轮播容器，防止旧卡片在页面闪现后被重绘到新位置
                 const carouselContainer = document.getElementById('carousel-container');
                 if (carouselContainer) carouselContainer.style.opacity = '0';
@@ -15810,8 +16552,8 @@
                             <!-- Left Sidebar Navigation -->
                             <div id="todo-sidebar" class="w-56 todo-sidebar flex flex-col rounded-2xl overflow-hidden bg-white transition-all duration-300 ease-in-out" style="border-radius: 24px;">
                                 <div class="p-4 space-y-1 shrink-0">
-                                    <button class="todo-nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-primary bg-primary/10 transition-all duration-200" data-todo-view="task-manage">
-                                        <i class="fa fa-th-large w-5 text-center shrink-0 text-primary"></i>
+                                    <button class="todo-nav-btn nav-btn-active w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200" data-todo-view="task-manage">
+                                        <i class="fa fa-th-large w-5 text-center shrink-0"></i>
                                         <span class="nav-text truncate">任务管理</span>
                                     </button>
                                 </div>
@@ -15888,7 +16630,7 @@
                                         <div class="relative z-10 flex flex-col h-full justify-between" style="min-height: 93px;">
                                             <div class="flex items-center justify-between">
                                                 <div class="text-base font-bold text-gray-800">进行中</div>
-                                                <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-cyan-500 shrink-0">
+                                                <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style="background-color: rgb(53, 150, 244);">
                                                     <i class="fa fa-spinner text-white text-lg"></i>
                                                 </div>
                                             </div>
@@ -15904,7 +16646,7 @@
                                         <div class="relative z-10 flex flex-col h-full justify-between" style="min-height: 93px;">
                                             <div class="flex items-center justify-between">
                                                 <div class="text-base font-bold text-gray-800">已完成</div>
-                                                <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-emerald-500 shrink-0">
+                                                <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style="background-color: rgb(0, 191, 165);">
                                                     <i class="fa fa-check-circle text-white text-lg"></i>
                                                 </div>
                                             </div>
@@ -16001,8 +16743,8 @@
                                                             <span class="text-sm text-gray-700">进行中</span>
                                                             <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                         </div>
-                                                        <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors" data-value="已超期">
-                                                            <span class="text-sm text-gray-700">已超期</span>
+                                                        <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors" data-value="已逾期">
+                                                            <span class="text-sm text-gray-700">已逾期</span>
                                                             <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                         </div>
                                                         <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors" data-value="已完成">
@@ -16103,8 +16845,8 @@
                                                         <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#22c55e"></span><span class="text-sm text-gray-700 dark:text-gray-200">已完成</span></span>
                                                         <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                     </div>
-                                                    <div class="gantt-overview-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 transition-colors" data-value="已超期">
-                                                        <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ef4444"></span><span class="text-sm text-gray-700 dark:text-gray-200">已超期</span></span>
+                                                    <div class="gantt-overview-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 transition-colors" data-value="已逾期">
+                                                        <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ef4444"></span><span class="text-sm text-gray-700 dark:text-gray-200">已逾期</span></span>
                                                         <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                     </div>
                                                 </div>
@@ -16148,8 +16890,8 @@
                                                         <span class="text-sm text-gray-700 dark:text-gray-200">进行中</span>
                                                         <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                     </div>
-                                                    <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors" data-value="已超期">
-                                                        <span class="text-sm text-gray-700 dark:text-gray-200">已超期</span>
+                                                    <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors" data-value="已逾期">
+                                                        <span class="text-sm text-gray-700 dark:text-gray-200">已逾期</span>
                                                         <i class="fa fa-check text-xs text-blue-500 hidden"></i>
                                                     </div>
                                                     <div class="status-filter-item flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors" data-value="已完成">
@@ -17110,7 +17852,7 @@
                             <div class="settings-content-panel p-8 flex flex-col min-h-[300px]">
                                 <div class="mb-8 flex flex-col items-center">
                                     <img id="about-software-logo" src="images/weice_logo.png" alt="未策" class="h-36 mb-4">
-                                    <p class="text-lg text-black font-bold">版本：V1.2.0</p>
+                                    <p class="text-lg text-black font-bold">版本：V1.2.1</p>
                                 </div>
                                 <div class="mt-6">
                                     <div class="flex justify-center space-x-6 items-center">
@@ -17768,9 +18510,62 @@
                 });
 
                 const forgotMethod = document.getElementById('forgot-method');
-                if (forgotMethod) {
+                const forgotMethodTrigger = document.getElementById('forgot-method-trigger');
+                const forgotMethodDropdown = document.getElementById('forgot-method-dropdown');
+                const forgotMethodSelected = document.getElementById('forgot-method-selected');
+                const forgotMethodChevron = document.getElementById('forgot-method-chevron');
+
+                if (forgotMethod && forgotMethodTrigger && forgotMethodDropdown) {
+                    function updateForgotMethodUI(value) {
+                        const options = forgotMethodDropdown.querySelectorAll('.forgot-method-option');
+                        options.forEach(opt => {
+                            opt.classList.toggle('selected', opt.dataset.value === value);
+                        });
+                        const selectedOption = forgotMethod.querySelector(`option[value="${value}"]`);
+                        if (selectedOption) {
+                            forgotMethodSelected.textContent = selectedOption.textContent;
+                        }
+                    }
+
+                    function openForgotMethodDropdown() {
+                        forgotMethodDropdown.classList.remove('hidden');
+                        forgotMethodChevron.classList.add('open');
+                    }
+
+                    function closeForgotMethodDropdown() {
+                        forgotMethodDropdown.classList.add('hidden');
+                        forgotMethodChevron.classList.remove('open');
+                    }
+
+                    forgotMethodTrigger.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (forgotMethodDropdown.classList.contains('hidden')) {
+                            openForgotMethodDropdown();
+                        } else {
+                            closeForgotMethodDropdown();
+                        }
+                    });
+
+                    forgotMethodDropdown.querySelectorAll('.forgot-method-option').forEach(opt => {
+                        opt.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const value = this.dataset.value;
+                            forgotMethod.value = value;
+                            updateForgotMethodUI(value);
+                            closeForgotMethodDropdown();
+                            forgotMethod.dispatchEvent(new Event('change'));
+                        });
+                    });
+
+                    document.addEventListener('click', function(e) {
+                        if (!forgotMethodTrigger.contains(e.target) && !forgotMethodDropdown.contains(e.target)) {
+                            closeForgotMethodDropdown();
+                        }
+                    });
+
                     forgotMethod.addEventListener('change', function() {
                         const method = this.value;
+                        updateForgotMethodUI(method);
                         if (method === 'email') {
                             document.getElementById('forgot-email-field').classList.remove('hidden');
                             document.getElementById('forgot-phone-field').classList.add('hidden');
@@ -17779,6 +18574,8 @@
                             document.getElementById('forgot-phone-field').classList.remove('hidden');
                         }
                     });
+
+                    updateForgotMethodUI(forgotMethod.value);
                 }
 
                 const usernameInput = document.getElementById('login-username');
@@ -17836,6 +18633,8 @@
 
                 document.getElementById('login-page').classList.add('hidden');
                 document.getElementById('register-page').classList.add('hidden');
+                document.getElementById('welcome-page').classList.add('hidden');
+                document.getElementById('forgot-password-modal').classList.add('hidden');
                 document.getElementById('main-nav').classList.add('hidden');
                 document.getElementById('main-content').classList.add('hidden');
 
@@ -17854,20 +18653,7 @@
                             if (user) {
                                 currentUser = user;
                                 console.log('免登有效，自动登录');
-
-                                document.getElementById('main-nav').classList.remove('hidden');
-                                document.getElementById('main-content').classList.remove('hidden');
-                                if (typeof loadTodoPage === 'function') await loadTodoPage();
-                                const navEl = document.getElementById('main-nav');
-                                if (navEl) {
-                                    navEl.classList.add('animate-fadeIn');
-                                    navEl.style.opacity = '';
-                                }
-                                const notesEl = document.getElementById('notes');
-                                if (notesEl) {
-                                    notesEl.classList.add('animate-fadeIn');
-                                    notesEl.style.opacity = '';
-                                }
+                                await showMainPage();
                                 return;
                             }
                         } else {
@@ -17882,58 +18668,214 @@
                             if (user) {
                                 currentUser = user;
                                 console.log('今日已登录，自动免登');
-
-                                document.getElementById('main-nav').classList.remove('hidden');
-                                document.getElementById('main-content').classList.remove('hidden');
-                                if (typeof loadTodoPage === 'function') await loadTodoPage();
-                                const navEl = document.getElementById('main-nav');
-                                if (navEl) {
-                                    navEl.classList.add('animate-fadeIn');
-                                    navEl.style.opacity = '';
-                                }
-                                const notesEl = document.getElementById('notes');
-                                if (notesEl) {
-                                    notesEl.classList.add('animate-fadeIn');
-                                    notesEl.style.opacity = '';
-                                }
+                                await showMainPage();
                                 return;
                             }
                         }
                     }
 
-                    document.getElementById('login-page').classList.remove('hidden');
+                    const lp = document.getElementById('login-page');
+                    lp.classList.remove('hidden');
+                    lp.classList.remove('visible');
+                    showAuthAurora();
+                    setTimeout(() => {
+                        lp.classList.add('visible');
+                        markAuthTextPlayed();
+                    }, 50);
                 } else {
 
-                    const skipRegister = await window.db.get('skipRegister');
-                    if (skipRegister && skipRegister.skip) {
+                    showAuthAurora();
+                    const wp = document.getElementById('welcome-page');
+                    wp.classList.remove('hidden');
+                    wp.classList.remove('visible');
+                    setTimeout(() => {
+                        wp.classList.add('visible');
+                    }, 50);
+                }
+            }
 
-                        document.getElementById('main-nav').classList.remove('hidden');
-                        document.getElementById('main-content').classList.remove('hidden');
-                        if (typeof loadTodoPage === 'function') await loadTodoPage();
-                        const navEl = document.getElementById('main-nav');
-                        if (navEl) {
-                            navEl.classList.add('animate-fadeIn');
-                            navEl.style.opacity = '';
-                        }
-                        const notesEl = document.getElementById('notes');
-                        if (notesEl) {
-                            notesEl.classList.add('animate-fadeIn');
-                            notesEl.style.opacity = '';
-                        }
-                    } else {
+            let authAuroraInitialized = false;
+            let authTextPlayed = false;
+            let fontAwesomeReady = false;
+            let mainPageInitialized = false;
 
-                        document.getElementById('register-page').classList.remove('hidden');
+            async function waitForFontAwesome(timeout = 4000) {
+                if (fontAwesomeReady) return;
+                
+                const startTime = Date.now();
+                const checkFont = () => {
+                    return new Promise(resolve => {
+                        const testSpan = document.createElement('span');
+                        testSpan.className = 'fa fa-circle';
+                        testSpan.style.cssText = 'position:absolute;visibility:hidden;left:-9999px;top:-9999px;font-size:16px;display:inline-block;';
+                        document.body.appendChild(testSpan);
+                        setTimeout(() => {
+                            const w = testSpan.offsetWidth;
+                            document.body.removeChild(testSpan);
+                            resolve(w > 0);
+                        }, 50);
+                    });
+                };
+
+                while (Date.now() - startTime < timeout) {
+                    const loaded = await checkFont();
+                    if (loaded) {
+                        fontAwesomeReady = true;
+                        return;
                     }
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                
+                fontAwesomeReady = true;
+            }
+
+            async function showMainPage() {
+                await waitForFontAwesome(3000);
+                
+                const navEl = document.getElementById('main-nav');
+                const contentEl = document.getElementById('main-content');
+                const notesEl = document.getElementById('notes');
+                
+                // First make elements visible but hidden via visibility
+                if (navEl) {
+                    navEl.style.visibility = 'hidden';
+                    navEl.classList.remove('hidden');
+                }
+                if (contentEl) {
+                    contentEl.style.visibility = 'hidden';
+                    contentEl.classList.remove('hidden');
+                }
+                if (notesEl) {
+                    notesEl.style.visibility = 'hidden';
+                    notesEl.classList.remove('hidden');
+                }
+                
+                // Wait for layout and font rendering (double rAF ensures paint)
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+                
+                // Load data (icons should render now)
+                if (typeof loadTodoPage === 'function') await loadTodoPage();
+                
+                // Show with fade-in
+                if (navEl) {
+                    navEl.style.visibility = '';
+                    navEl.classList.add('animate-fadeIn');
+                    navEl.style.opacity = '';
+                }
+                if (contentEl) {
+                    contentEl.style.visibility = '';
+                    contentEl.classList.add('animate-fadeIn');
+                    contentEl.style.opacity = '';
+                }
+                if (notesEl) {
+                    notesEl.style.visibility = '';
+                    notesEl.classList.add('animate-fadeIn');
+                    notesEl.style.opacity = '';
+                }
+                
+                mainPageInitialized = true;
+            }
+
+            function showAuthAurora() {
+                const aurora = document.getElementById('auth-aurora-bg');
+                if (!aurora.classList.contains('hidden')) {
+                    if (aurora._aurora) {
+                        aurora._aurora.refresh();
+                    }
+                    return;
+                }
+                aurora.classList.remove('hidden');
+                if (!authAuroraInitialized) {
+                    window.initAuroraOnElement && window.initAuroraOnElement('auth-aurora-bg');
+                    authAuroraInitialized = true;
+                } else if (aurora._aurora) {
+                    aurora._aurora.refresh();
+                }
+                setTimeout(() => {
+                    aurora.classList.add('visible');
+                }, 50);
+            }
+            function hideAuthAurora() {
+                const aurora = document.getElementById('auth-aurora-bg');
+                aurora.classList.add('hidden');
+                aurora.classList.remove('visible');
+                if (aurora._aurora) {
+                    aurora._aurora.destroy();
+                }
+                document.getElementById('welcome-page').classList.add('hidden');
+                document.getElementById('welcome-page').classList.remove('visible');
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('login-page').classList.remove('visible');
+                document.getElementById('register-page').classList.add('hidden');
+                document.getElementById('register-page').classList.remove('visible');
+                document.getElementById('forgot-password-modal').classList.add('hidden');
+                document.getElementById('forgot-password-modal').classList.remove('visible');
+            }
+            function markAuthTextPlayed() {
+                if (!authTextPlayed) {
+                    setTimeout(() => {
+                        authTextPlayed = true;
+                        document.querySelectorAll('.auth-page-content').forEach(el => {
+                            el.classList.add('text-persistent');
+                        });
+                    }, 1000);
                 }
             }
 
             function showLoginForm() {
                 document.getElementById('register-page').classList.add('hidden');
-                document.getElementById('login-page').classList.remove('hidden');
+                document.getElementById('forgot-password-modal').classList.add('hidden');
+                const lp = document.getElementById('login-page');
+                lp.classList.remove('hidden');
+                lp.classList.remove('visible');
 
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-password').value = '';
                 document.getElementById('remember-me').checked = false;
+
+                showAuthAurora();
+                setTimeout(() => {
+                    lp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
+            }
+
+            function showWelcomePage() {
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('register-page').classList.add('hidden');
+                document.getElementById('forgot-password-modal').classList.add('hidden');
+                showAuthAurora();
+                const wp = document.getElementById('welcome-page');
+                wp.classList.remove('hidden');
+                wp.classList.remove('visible');
+                setTimeout(() => {
+                    wp.classList.add('visible');
+                }, 50);
+            }
+
+            function showRegisterFromWelcome() {
+                document.getElementById('welcome-page').classList.add('hidden');
+                const rp = document.getElementById('register-page');
+                rp.classList.remove('hidden');
+                rp.classList.remove('visible');
+                document.getElementById('register-username').value = '';
+                document.getElementById('register-password').value = '';
+                document.getElementById('register-confirm-password').value = '';
+                showAuthAurora();
+                setTimeout(() => {
+                    rp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
+            }
+
+            async function startFromWelcome() {
+                document.getElementById('welcome-page').classList.add('hidden');
+                hideAuthAurora();
+                await showMainPage();
+                if (!localStorage.getItem('welcomeToastShown')) {
+                    showToast('欢迎', '您已成功进入应用，可在设置中注册账号', 'success');
+                    localStorage.setItem('welcomeToastShown', 'true');
+                }
             }
 
             async function skipRegistration() {
@@ -17941,31 +18883,27 @@
                 await window.db.set('skipRegister', { skip: true, date: new Date().toDateString() });
 
                 document.getElementById('register-page').classList.add('hidden');
-
-                document.getElementById('main-nav').classList.remove('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                if (typeof loadTodoPage === 'function') await loadTodoPage();
-                const navEl = document.getElementById('main-nav');
-                if (navEl) {
-                    navEl.classList.add('animate-fadeIn');
-                    navEl.style.opacity = '';
-                }
-                const notesEl = document.getElementById('notes');
-                if (notesEl) {
-                    notesEl.classList.add('animate-fadeIn');
-                    notesEl.style.opacity = '';
-                }
-
+                hideAuthAurora();
+                await showMainPage();
                 showToast('提示', '您已选择暂不注册，可以在设置中进行注册', 'info');
             }
 
             function showRegisterForm() {
                 document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('register-page').classList.remove('hidden');
+                document.getElementById('forgot-password-modal').classList.add('hidden');
+                const rp = document.getElementById('register-page');
+                rp.classList.remove('hidden');
+                rp.classList.remove('visible');
 
                 document.getElementById('register-username').value = '';
                 document.getElementById('register-password').value = '';
                 document.getElementById('register-confirm-password').value = '';
+
+                showAuthAurora();
+                setTimeout(() => {
+                    rp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
             }
 
             function handleLoginKeyPress(event) {
@@ -18694,12 +19632,12 @@
 
                         // Update left sidebar nav buttons
                         todoNavBtns.forEach(b => {
-                            b.classList.remove('text-primary', 'bg-primary/10', 'text-white');
+                            b.classList.remove('nav-btn-active', 'text-primary', 'bg-primary/10', 'text-white');
                             b.classList.add('text-gray-600');
                             b.style.background = '';
                         });
                         this.classList.remove('text-gray-600');
-                        this.classList.add('text-primary', 'bg-primary/10');
+                        this.classList.add('nav-btn-active');
 
                         loadTasks();
                     });
@@ -18792,9 +19730,10 @@
                     const view = btn.getAttribute('data-todo-view');
                     if (view === 'task-manage') {
                         btn.classList.remove('text-gray-600', 'text-gray-400');
-                        btn.classList.add('text-primary', 'bg-primary/10');
+                        btn.classList.add('nav-btn-active');
+                        btn.classList.remove('text-primary', 'bg-primary/10');
                     } else {
-                        btn.classList.remove('text-primary', 'bg-primary/10', 'text-white');
+                        btn.classList.remove('nav-btn-active', 'text-primary', 'bg-primary/10', 'text-white');
                         btn.classList.add('text-gray-600');
                     }
                     btn.style.background = '';
@@ -19066,8 +20005,8 @@
 
             let ganttDetailYear = new Date().getFullYear();
             let ganttDetailMonth = new Date().getMonth() + 1;
-            let ganttStatusFilter = 'all'; // 'all', '未启动', '进行中', '已完成', '已超期'
-            let ganttOverviewStatusFilter = 'all'; // 'all', '未启动', '进行中', '已完成', '已超期'
+            let ganttStatusFilter = 'all'; // 'all', '未启动', '进行中', '已完成', '已逾期'
+            let ganttOverviewStatusFilter = 'all'; // 'all', '未启动', '进行中', '已完成', '已逾期'
 
             const ganttBarColors = [
                 '#3b82f6', '#8b5cf6', '#ec4899', '#f43f5e',
@@ -19151,13 +20090,13 @@
 
             function getTaskBarColor(task) {
                 if (task.completed) return 'linear-gradient(135deg, #34d399 0%, #059669 100%)';
-                if (task.status === '已超期') return 'linear-gradient(135deg, #f87171 0%, #dc2626 100%)';
+                if (task.status === '已逾期') return 'linear-gradient(135deg, #f87171 0%, #dc2626 100%)';
                 if (task.status === '未启动') return 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)';
                 return 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)';
             }
             function getTaskBarShadow(task) {
                 if (task.completed) return '0 2px 8px rgba(5,150,105,0.4)';
-                if (task.status === '已超期') return '0 2px 8px rgba(220,38,38,0.4)';
+                if (task.status === '已逾期') return '0 2px 8px rgba(220,38,38,0.4)';
                 if (task.status === '未启动') return '0 2px 6px rgba(100,116,139,0.25)';
                 return '0 2px 8px rgba(37,99,235,0.35)';
             }
@@ -19436,7 +20375,7 @@
                         { key: '未启动', label: '未启动', dotClass: '', dotStyle: 'background:#94a3b8' },
                         { key: '进行中', label: '进行中', dotClass: '', dotStyle: 'background:#3b82f6' },
                         { key: '已完成', label: '已完成', dotClass: '', dotStyle: 'background:#22c55e' },
-                        { key: '已超期', label: '已超期', dotClass: '', dotStyle: 'background:#ef4444' }
+                        { key: '已逾期', label: '已逾期', dotClass: '', dotStyle: 'background:#ef4444' }
                     ];
                     statusOptions.forEach(opt => {
                         const activeClass = ganttStatusFilter === opt.key ? ' active' : '';
@@ -19771,7 +20710,7 @@
                 const priority = task.priority || '低';
                 const priorityBgColor = priority === '高' ? '#ef4444' : (priority === '中' ? '#f97316' : '#64748b');
                 const statusText = task.completed ? '已完成' : (task.status || '待处理');
-                const statusBgColor = task.completed ? '#10b981' : (task.status === '进行中' ? '#3b82f6' : (task.status === '已超期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : '#eab308')));
+                const statusBgColor = task.completed ? '#10b981' : (task.status === '进行中' ? '#3b82f6' : (task.status === '已逾期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : '#eab308')));
                 const isSelected = currentTaskId === task.id;
 
                 const rowBgClass = isSelected
@@ -20006,8 +20945,8 @@
                     container.appendChild(todoGroup);
                 }
 
-                // Custom list groups - use in-memory customLists, skip migration (already done in loadTasks)
-                let allCustomLists = customLists || [];
+                // Custom list groups - use window.customLists (最新写入的全局副本) 优先，回退到闭包变量 customLists，避免删除/重命名/新建后页面未刷新仍显示旧列表
+                let allCustomLists = window.customLists || customLists || [];
 
                 // Migrate on the fly only when needed
                 let needsMigration = false;
@@ -20432,7 +21371,7 @@
                 card.dataset.index = index;
                 card.dataset.taskId = task.id;
 
-                const statusClass = task.completed ? 'completed' : (task.status === '进行中' ? 'in-progress' : (task.status === '已超期' ? 'overdue' : (task.status === '未启动' ? 'not-started' : 'pending')));
+                const statusClass = task.completed ? 'completed' : (task.status === '进行中' ? 'in-progress' : (task.status === '已逾期' ? 'overdue' : (task.status === '未启动' ? 'not-started' : 'pending')));
                 const statusText = task.completed ? '已完成' : (task.status || '待处理');
                 const dueDate = task.dueDate ? new Date(task.dueDate).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }) : '';
                 const priority = task.priority || '低';
@@ -20746,7 +21685,7 @@
                             // 已逾期卡片选中态显示红光
                             const taskIdx = parseInt(card.dataset.index);
                             const task = carouselTasks[taskIdx];
-                            const isOverdue = task && (task.status === '已超期' || (task.dueDate && !task.completed && new Date(task.dueDate) < new Date(new Date().toDateString())));
+                            const isOverdue = task && (task.status === '已逾期' || (task.dueDate && !task.completed && new Date(task.dueDate) < new Date(new Date().toDateString())));
                             if (isOverdue) {
                                 card.classList.add('overdue-active');
                             } else {
@@ -20932,7 +21871,7 @@
                     const priority = task.priority || '低';
                     const priorityBgColor = priority === '高' ? '#ef4444' : (priority === '中' ? '#f97316' : '#64748b');
                     const statusText = task.completed ? '已完成' : (task.status || '待处理');
-                    const statusBgColor = task.completed ? '#10b981' : (task.status === '进行中' ? '#3b82f6' : (task.status === '已超期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : '#eab308')));
+                    const statusBgColor = task.completed ? '#10b981' : (task.status === '进行中' ? '#3b82f6' : (task.status === '已逾期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : '#eab308')));
 
                     let taskOverviews = [];
 
@@ -21580,7 +22519,7 @@
                 // Update status
                 let statusText = task.completed ? '已完成' : (task.status || '进行中');
                 // Append overdue days directly to status text when overdue
-                if (!task.completed && task.status === '已超期' && task.dueDate) {
+                if (!task.completed && task.status === '已逾期' && task.dueDate) {
                     const now = new Date();
                     const dueDate = new Date(task.dueDate);
                     const diffDays = Math.floor((now - dueDate) / (1000 * 60 * 60 * 24));
@@ -21594,9 +22533,9 @@
                 }
                 const statusEl = document.getElementById('detail-task-status');
                 if (statusEl) {
-                    const statusBgColor = task.completed ? '#d1fae5' : (task.status === '已超期' ? '#fee2e2' : (task.status === '未启动' ? '#f3f4f6' : (task.status === '进行中' ? '#dbeafe' : '#d1fae5')));
-                    const statusTextColor = task.completed ? '#059669' : (task.status === '已超期' ? '#dc2626' : (task.status === '未启动' ? '#4b5563' : (task.status === '进行中' ? '#2563eb' : '#059669')));
-                    const statusDotColor = task.completed ? '#10b981' : (task.status === '已超期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : (task.status === '进行中' ? '#3b82f6' : '#10b981')));
+                    const statusBgColor = task.completed ? '#d1fae5' : (task.status === '已逾期' ? '#fee2e2' : (task.status === '未启动' ? '#f3f4f6' : (task.status === '进行中' ? '#dbeafe' : '#d1fae5')));
+                    const statusTextColor = task.completed ? '#059669' : (task.status === '已逾期' ? '#dc2626' : (task.status === '未启动' ? '#4b5563' : (task.status === '进行中' ? '#2563eb' : '#059669')));
+                    const statusDotColor = task.completed ? '#10b981' : (task.status === '已逾期' ? '#ef4444' : (task.status === '未启动' ? '#9ca3af' : (task.status === '进行中' ? '#3b82f6' : '#10b981')));
                     statusEl.className = 'flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs';
                     statusEl.style.backgroundColor = statusBgColor;
                     statusEl.style.color = statusTextColor;
@@ -23000,7 +23939,7 @@
                         const startDate = task.startDate ? new Date(task.startDate) : null;
                         const dueDate = task.dueDate ? new Date(task.dueDate) : null;
                         if (dueDate && now > dueDate) {
-                            task.status = '已超期';
+                            task.status = '已逾期';
                         } else if (startDate && now < startDate) {
                             task.status = '未启动';
                         } else {
@@ -23544,17 +24483,17 @@
                         } else {
                             completedInfo.classList.add('hidden');
                             completedInfo.style.display = '';
-                            if (task.status === '已超期' && task.dueDate) {
+                            if (task.status === '已逾期' && task.dueDate) {
                                 const now = new Date();
                                 const dueDate = new Date(task.dueDate);
                                 const diffMs = now - dueDate;
                                 const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
                                 if (diffDays === 0) {
-                                    overdueDaysSpan.textContent = '已超期今天';
+                                    overdueDaysSpan.textContent = '已逾期今天';
                                 } else if (diffDays === 1) {
-                                    overdueDaysSpan.textContent = '已超期 1 天';
+                                    overdueDaysSpan.textContent = '已逾期 1 天';
                                 } else {
-                                    overdueDaysSpan.textContent = `已超期 ${diffDays} 天`;
+                                    overdueDaysSpan.textContent = `已逾期 ${diffDays} 天`;
                                 }
                                 overdueInfo.classList.remove('hidden');
                                 overdueInfo.style.display = 'inline-flex';
@@ -24214,7 +25153,7 @@
                 // Update carousel card if it exists
                 const card = document.querySelector(`.carousel-card[data-task-id="${taskId}"]`);
                 if (card) {
-                    const statusClass = task.completed ? 'completed' : (task.status === '进行中' ? 'in-progress' : (task.status === '已超期' ? 'overdue' : (task.status === '未启动' ? 'not-started' : 'pending')));
+                    const statusClass = task.completed ? 'completed' : (task.status === '进行中' ? 'in-progress' : (task.status === '已逾期' ? 'overdue' : (task.status === '未启动' ? 'not-started' : 'pending')));
                     const statusText = task.completed ? '已完成' : (task.status || '待处理');
                     const statusEl = card.querySelector('.carousel-card-status');
                     if (statusEl) {
@@ -24790,7 +25729,7 @@
                     const dueDate = task.dueDate ? new Date(task.dueDate) : null;
 
                     if (dueDate && now > dueDate) {
-                        newStatus = '已超期';
+                        newStatus = '已逾期';
                     } else if (startDate && now < startDate) {
                         newStatus = '未启动';
                     } else {
@@ -24819,6 +25758,9 @@
                     if (changed) {
                         saveTasks();
                         renderTasks();
+                        if (currentTaskId && typeof updateTaskDetailPanel === 'function') {
+                            updateTaskDetailPanel(currentTaskId, true);
+                        }
                     }
                 }, 60000);
             }
@@ -25744,19 +26686,8 @@
                     await saveLoginHistory(username);
 
                     document.getElementById('login-page').classList.add('hidden');
-                    document.getElementById('main-nav').classList.remove('hidden');
-                    document.getElementById('main-content').classList.remove('hidden');
-                    if (typeof loadTodoPage === 'function') await loadTodoPage();
-                    const navEl = document.getElementById('main-nav');
-                    if (navEl) {
-                        navEl.classList.add('animate-fadeIn');
-                        navEl.style.opacity = '';
-                    }
-                    const notesEl = document.getElementById('notes');
-                    if (notesEl) {
-                        notesEl.classList.add('animate-fadeIn');
-                        notesEl.style.opacity = '';
-                    }
+                    hideAuthAurora();
+                    await showMainPage();
 
                     // 确保导航栏 indicator 与 activeTab 同步到第一个 tab
                     if (typeof window.resetNavTabs === 'function') {
@@ -26241,7 +27172,10 @@
 
             function showForgotPasswordModal() {
                 document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('forgot-password-modal').classList.remove('hidden');
+                document.getElementById('register-page').classList.add('hidden');
+                const fp = document.getElementById('forgot-password-modal');
+                fp.classList.remove('hidden');
+                fp.classList.remove('visible');
 
                 document.getElementById('forgot-username').value = '';
                 document.getElementById('forgot-email').value = '';
@@ -26251,11 +27185,25 @@
 
                 document.getElementById('forgot-email-field').classList.remove('hidden');
                 document.getElementById('forgot-phone-field').classList.add('hidden');
+
+                showAuthAurora();
+                setTimeout(() => {
+                    fp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
             }
 
             function closeForgotPasswordModal() {
                 document.getElementById('forgot-password-modal').classList.add('hidden');
-                document.getElementById('login-page').classList.remove('hidden');
+                const lp = document.getElementById('login-page');
+                lp.classList.remove('hidden');
+                lp.classList.remove('visible');
+
+                showAuthAurora();
+                setTimeout(() => {
+                    lp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
             }
 
             async function resetPassword() {
@@ -26617,8 +27565,15 @@
 
                 refreshUserList();
 
-                document.getElementById('login-page').classList.remove('hidden');
+                const lp = document.getElementById('login-page');
+                lp.classList.remove('hidden');
+                lp.classList.remove('visible');
                 document.getElementById('register-page').classList.add('hidden');
+                showAuthAurora();
+                setTimeout(() => {
+                    lp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
             }
 
             async function refreshUserList() {
@@ -26684,10 +27639,18 @@
 
                     if (updatedUsers.length > 0) {
 
-                        document.getElementById('login-page').classList.remove('hidden');
+                        const lp = document.getElementById('login-page');
+                        lp.classList.remove('hidden');
+                        lp.classList.remove('visible');
+                        showAuthAurora();
+                        setTimeout(() => {
+                            lp.classList.add('visible');
+                            markAuthTextPlayed();
+                        }, 50);
                     } else {
 
                         document.getElementById('login-page').classList.add('hidden');
+                        hideAuthAurora();
                     }
                 }
 
@@ -26706,7 +27669,14 @@
 
                 document.getElementById('main-nav').classList.add('hidden');
                 document.getElementById('main-content').classList.add('hidden');
-                document.getElementById('login-page').classList.remove('hidden');
+                const lp = document.getElementById('login-page');
+                lp.classList.remove('hidden');
+                lp.classList.remove('visible');
+                showAuthAurora();
+                setTimeout(() => {
+                    lp.classList.add('visible');
+                    markAuthTextPlayed();
+                }, 50);
 
                 // 重置导航栏状态，确保 indicator 和 activeTab 回到第一个 tab
                 if (typeof window.resetNavTabs === 'function') {
@@ -33824,7 +34794,7 @@ function otFmtMonth(iso) {
                             <h2 class="text-lg font-semibold text-gray-800">数据中心</h2>
                             <div class="flex items-center space-x-2">
                                 <button id="batch-load-btn" class="px-3 py-2 h-9 rounded-xl bg-gray-100 text-black text-sm flex items-center shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" title="批量加载">
-                                    <i class="fa fa-folder-open"></i>
+                                    <i class="fa fa-folder-open" style="pointer-events: none;"></i>
                                 </button>
                                 <button id="batch-cancel-btn" class="px-3 py-2 rounded-xl bg-gray-100 text-black text-sm flex items-center space-x-2 shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 hidden" title="取消批量加载">
                                     <i class="fa fa-times"></i>
@@ -35179,7 +36149,7 @@ function otFmtMonth(iso) {
                             </div>
                         </div>
                     </div>
-                    <button onclick="batchLoadByDateRange()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white text-gray-600 text-sm shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200" title="按时间范围加载数据">
+                    <button onclick="batchLoadByDateRange()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white text-black text-sm shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200" title="按时间范围加载数据">
                         <i class="fa fa-folder-open"></i>
                     </button>
                     <button onclick="clearAllResultsData()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-red-500 text-white shadow-[0_2px_8px_rgba(197,48,48,0.3)] hover:shadow-[0_4px_12px_rgba(197,48,48,0.4)] transition-all duration-200" title="清除所有列表数据">
@@ -35567,7 +36537,7 @@ function otFmtMonth(iso) {
                             </div>
                         </div>
                         <div id="aftersales-overview-empty" class="text-center py-4 text-gray-500 hidden">
-                            <i class="fa fa-headphones text-2xl mb-2"></i>
+                            <i class="fa fa-headphones text-2xl mb-2" style="transform: scale(1.2); display: inline-block;"></i>
                             <p class="text-sm">暂无售后数据，请先在数据计算添加售后明细统计</p>
                         </div>
                     </div>
@@ -36556,7 +37526,7 @@ function otFmtMonth(iso) {
                 </div>
             </div>
 
-            <div id="payment-records" class="purchase-tab-content hidden" style="width: 100%; min-width: 1350px;">
+            <div id="payment-records" class="purchase-tab-content hidden" style="width: 100%; min-width: 1350px; margin-top: -12px;">
                 <div class="grid grid-cols-[repeat(3,minmax(280px,1fr))] gap-6 mb-6">
                     <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100" style="min-width: 280px;">
                         <div class="flex items-center justify-between">
@@ -36973,7 +37943,7 @@ function otFmtMonth(iso) {
                 </div>
             </div>
 
-            <div id="supplier-management" class="purchase-tab-content hidden" style="min-width: 1350px;">
+            <div id="supplier-management" class="purchase-tab-content hidden" style="min-width: 1350px; margin-top: -12px;">
                 <div class="grid grid-cols-5 gap-4 mb-6">
                     <div class="supplier-overview-card card bg-white border border-gray-200 cursor-pointer hover:shadow-md transition-all duration-200 ring-2 ring-gray-400" data-rating-filter="all">
                         <p class="text-sm font-medium text-gray-500 mb-1">合作供应商</p>
@@ -37049,7 +38019,7 @@ function otFmtMonth(iso) {
                 </div>
             </div>
 
-            <div id="purchase-query" class="purchase-tab-content hidden" style="min-width: 1350px;">
+            <div id="purchase-query" class="purchase-tab-content hidden" style="min-width: 1350px; margin-top: -12px;">
                 <div class="grid grid-cols-[repeat(4,minmax(220px,1fr))] gap-6 mb-6">
                     <div class="card bg-gradient-to-r from-white to-gray-50 border border-gray-100">
                         <div class="flex items-center justify-between">
@@ -40570,6 +41540,7 @@ function otFmtMonth(iso) {
                         }
                         showToast('成功', successMsg, 'success');
                         console.log('批量加载合并完成');
+                        deactivateBatchSelection();
                     }, 500);
                 }
             });
@@ -40579,7 +41550,7 @@ function otFmtMonth(iso) {
                 selectedDataItems.clear();
 
                 const batchBtn = document.getElementById('batch-load-btn');
-                batchBtn.innerHTML = '<i class="fa fa-folder-open"></i><span>加载</span>';
+                batchBtn.innerHTML = '<i class="fa fa-folder-open" style="pointer-events: none;"></i><span>加载</span>';
 
                 const cancelBtn = document.getElementById('batch-cancel-btn');
                 cancelBtn.classList.remove('hidden');
@@ -40589,16 +41560,15 @@ function otFmtMonth(iso) {
 
                 const dataList = document.getElementById('saved-data-list');
                 const batchHeader = document.createElement('div');
-                batchHeader.className = 'flex justify-between items-center p-3 bg-blue-50 rounded-md mb-3';
+                batchHeader.className = 'flex justify-between items-center p-3 bg-gray-100 rounded-xl mb-3';
                 batchHeader.id = 'batch-selection-header';
                 batchHeader.innerHTML = `
                     <div class="flex items-center">
-                        <i class="fa fa-info-circle text-primary mr-2"></i>
                         <span class="text-sm font-medium text-gray-700">批量加载模式</span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="text-xs text-gray-600" id="selected-count">已选择: 0</span>
-                        <button id="batch-select-all" class="btn btn-sm btn-primary">
+                        <button id="batch-select-all" class="btn btn-sm btn-primary" style="transform: scale(0.8); transform-origin: center;">
                             <i class="fa fa-check-square-o mr-1"></i>全选
                         </button>
                     </div>
@@ -40737,7 +41707,7 @@ function otFmtMonth(iso) {
                 selectedDataItems.clear();
 
                 const batchBtn = document.getElementById('batch-load-btn');
-                batchBtn.innerHTML = '<i class="fa fa-folder-open"></i>';
+                batchBtn.innerHTML = '<i class="fa fa-folder-open" style="pointer-events: none;"></i>';
 
                 const cancelBtn = document.getElementById('batch-cancel-btn');
                 cancelBtn.classList.add('hidden');
@@ -40753,6 +41723,14 @@ function otFmtMonth(iso) {
                     if (checkbox) checkbox.remove();
                 });
             }
+
+            document.addEventListener('click', function(e) {
+                if (!batchSelectActive) return;
+                const container = document.getElementById('saved-data-container');
+                if (container && !container.contains(e.target) && e.target.id !== 'batch-load-btn') {
+                    deactivateBatchSelection();
+                }
+            });
 
             document.getElementById('saved-data-prev-page').addEventListener('click', function() {
                 if (currentPage > 1) {
@@ -42507,6 +43485,9 @@ function otFmtMonth(iso) {
                             </span>
                         </div>
                         <div class="flex items-center space-x-2 flex-shrink-0 ml-3" onclick="event.stopPropagation()">
+                            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="openAddProductIdModal('${shop.id}')" title="添加商品ID">
+                                <i class="fa fa-plus"></i>
+                            </button>
                             <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" onclick="showAddShopModal('${shop.id}')" title="编辑店铺">
                                 <i class="fa fa-pencil"></i>
                             </button>
@@ -42521,9 +43502,6 @@ function otFmtMonth(iso) {
                         <div class="mb-4">
                             <div class="flex justify-between items-center mb-3">
                                 <div class="flex items-center space-x-3">
-                                    <button onclick="openAddProductIdModal('${shop.id}')" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-black shadow-[5px_5px_10px_#d1d1d1,-4px_-4px_8px_rgba(255,255,255,0.4)] hover:shadow-[3px_3px_6px_#d1d1d1,-2px_-2px_4px_rgba(255,255,255,0.3)] active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25),inset_-2px_-2px_4px_rgba(255,255,255,0.15)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300" title="添加商品ID">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
                                     <label class="text-xl font-semibold text-gray-700">商品ID</label>
                                 </div>
                                 <div class="text-xs text-gray-400">店铺ID: ${shop.displayId || shop.id}</div>
@@ -45111,7 +46089,7 @@ function otFmtMonth(iso) {
         function renderEmptyGrid(container, message, icon = 'fa-home') {
             container.innerHTML = `
                 <div class="text-center py-4 text-gray-500 col-span-full">
-                    <i class="fa ${icon} text-2xl mb-2"></i>
+                    <i class="fa ${icon} text-2xl mb-2" style="transform: scale(1.2); display: inline-block;"></i>
                     <p>${message || '暂无数据'}</p>
                 </div>
             `;
@@ -48079,13 +49057,14 @@ function otFmtMonth(iso) {
                 }
             });
 
-            // 如果有未全部收货的项目，提示并跳过
+            // 如果有未全部收货的项目，提示并跳过（注意：提示要在模态框打开动画完成后再显示，避免被 modal 背景蒙层遮挡）
+            let pendingToast = null;
             if (notReceivedProducts.length > 0) {
                 if (purchaseWarehousingItems.length === 0) {
                     showToast('入库失败', `该批采购单的收货状态"未全部已收到"，无法入库`, 'error');
                     return;
                 } else {
-                    showToast('提示', `共 ${notReceivedProducts.length} 笔采购单收货状态不是"全部已收到"，已自动跳过`, 'warning');
+                    pendingToast = { title: '提示', message: `共 ${notReceivedProducts.length} 笔采购单收货状态不是"全部已收到"，已自动跳过`, type: 'warning' };
                 }
             }
 
@@ -48106,6 +49085,13 @@ function otFmtMonth(iso) {
             modalContent.classList.add('scale-100', 'opacity-100');
 
             updatePurchaseWarehousingTotals();
+
+            // 模态框打开动画（300ms）完成后再展示 toast，确保 toast 层级在最上可见
+            if (pendingToast) {
+                setTimeout(() => {
+                    showToast(pendingToast.title, pendingToast.message, pendingToast.type);
+                }, 340);
+            }
         }
 
         function renderPurchaseWarehousingList() {
@@ -48271,6 +49257,7 @@ function otFmtMonth(iso) {
             }
 
             await saveInventoryData();
+            // 入库成功/部分跳过的 toast 必须在模态框完全淡出（300ms）后再展示，否则会被 modal 背景蒙层盖住
             closePurchaseWarehousingModal();
 
             if (typeof renderWarehousingList === 'function') renderWarehousingList();
@@ -48278,13 +49265,17 @@ function otFmtMonth(iso) {
             renderSafetyStockDashboard();
             renderInventoryAgeDashboard();
 
-            // 如果有未匹配的商品，提示用户
-            if (unmatchedProducts.size > 0) {
-                const productList = Array.from(unmatchedProducts).slice(0, 3).join('、') + (unmatchedProducts.size > 3 ? '等' : '');
-                showToast('部分商品未入库', `${productList} 在成本档案中未找到对应项目，已跳过`, 'warning');
-            } else {
-                showToast('成功', `成功入库 ${savedCount} 条记录`, 'success');
-            }
+            setTimeout(() => {
+                // 如果有未匹配的商品，提示用户
+                if (unmatchedProducts.size > 0) {
+                    const productList = Array.from(unmatchedProducts).slice(0, 3).join('、') + (unmatchedProducts.size > 3 ? '等' : '');
+                    showToast('部分商品未入库', `${productList} 在成本档案中未找到对应项目，已跳过`, 'warning');
+                } else if (savedCount > 0) {
+                    showToast('成功', `成功入库 ${savedCount} 条记录`, 'success');
+                } else if (selectedItems.length > 0) {
+                    showToast('提示', '没有匹配到任何有效商品，无法入库', 'warning');
+                }
+            }, 330);
         }
 
         function generateMockCostItemDetails(id, type) {
@@ -51364,7 +52355,10 @@ function otFmtMonth(iso) {
             warehousingCurrentPage = 1;
             renderWarehousingList();
             if (typeof renderCostRecords === 'function') renderCostRecords();
-            showToast('成功', '入库单创建成功', 'success');
+            // 模态框关闭动画（300ms）完成后再展示成功提示，避免被 backdrop-blur 蒙层遮挡
+            setTimeout(() => {
+                showToast('成功', '入库单创建成功', 'success');
+            }, 330);
         }
 
         // ============================================================
@@ -53071,6 +54065,22 @@ function otFmtMonth(iso) {
             const toastMessage = document.getElementById('toast-message');
             const toastIcon = document.getElementById('toast-icon');
 
+            // =========================================================================
+            //  关键兜底：确保 #toast 是 <body> 的直接最后一个子节点
+            //  - 避免原本嵌套在任何带 transform / backdrop-filter / perspective 的祖先内
+            //    导致其 99999 z-index 只在该祖先的局部堆叠上下文内生效，被模态框（z:1001+）覆盖
+            //  - 每次调用都重新 append 一次，放在所有模态框 DOM 节点之后（最新绘制）
+            // =========================================================================
+            if (toast && toast.parentNode !== document.body) {
+                document.body.appendChild(toast);
+            } else if (toast && document.body.lastElementChild !== toast) {
+                document.body.appendChild(toast); // 移到最后，后绘制 = 视觉最上
+            }
+            if (toast) {
+                toast.style.setProperty('z-index', '2147483647', 'important');
+                toast.style.setProperty('position', 'fixed', 'important');
+            }
+
             toastTitle.textContent = title;
             toastMessage.textContent = message;
 
@@ -53083,6 +54093,9 @@ function otFmtMonth(iso) {
             } else if (type === 'info') {
                 toastIcon.innerHTML = '<i class="fa fa-info-circle text-xl"></i>';
                 toastIcon.className = 'flex-shrink-0 text-primary mr-3';
+            } else if (type === 'warning') {
+                toastIcon.innerHTML = '<i class="fa fa-exclamation-triangle text-xl"></i>';
+                toastIcon.className = 'flex-shrink-0 text-[#f59e0b] mr-3';
             }
 
             toast.classList.remove('hidden');
@@ -53090,17 +54103,22 @@ function otFmtMonth(iso) {
                 toast.classList.remove('translate-y-10', 'opacity-0');
             }, 10);
 
-            setTimeout(() => {
+            if (window._toastTimer) clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
                 hideToast();
             }, 3000);
         }
 
         function hideToast() {
             const toast = document.getElementById('toast');
+            if (!toast) return;
             toast.classList.add('translate-y-10', 'opacity-0');
 
-            setTimeout(() => {
+            if (window._toastHideTimer) clearTimeout(window._toastHideTimer);
+            window._toastHideTimer = setTimeout(() => {
                 toast.classList.add('hidden');
+                // 隐藏后再确保一次位置（保险）
+                if (toast.parentNode !== document.body) document.body.appendChild(toast);
             }, 300);
         }
 
@@ -62422,10 +63440,11 @@ function otFmtMonth(iso) {
 
                 if (currentTodoView === list.id) {
                     newListBtn.classList.remove('text-gray-600');
-                    newListBtn.classList.add('text-primary', 'bg-primary/10');
+                    newListBtn.classList.add('nav-btn-active');
+                    newListBtn.classList.remove('text-primary', 'bg-primary/10');
                 } else {
                     newListBtn.classList.add('text-gray-600');
-                    newListBtn.classList.remove('text-primary', 'bg-primary/10');
+                    newListBtn.classList.remove('nav-btn-active', 'text-primary', 'bg-primary/10');
                 }
 
                 newListBtn.addEventListener('click', function() {
@@ -62433,12 +63452,12 @@ function otFmtMonth(iso) {
                     currentTodoView = view;
 
                     document.querySelectorAll('.todo-nav-btn').forEach(b => {
-                        b.classList.remove('text-primary', 'bg-primary/10', 'text-white');
+                        b.classList.remove('nav-btn-active', 'text-primary', 'bg-primary/10', 'text-white');
                         b.classList.add('text-gray-600');
                         b.style.background = '';
                     });
                     this.classList.remove('text-gray-600');
-                    this.classList.add('text-primary', 'bg-primary/10');
+                    this.classList.add('nav-btn-active');
 
                     loadTasks();
                 });
@@ -62714,6 +63733,9 @@ function otFmtMonth(iso) {
                 });
 
                 await saveCustomLists(customLists);
+
+                // 同步全局 window.customLists，让 renderTaskGroups 在下一次调用时读到最新数据（无需刷新页面）
+                window.customLists = customLists;
 
                 await renderTaskGroups();
 
