@@ -14940,7 +14940,8 @@ void main() {
                     <img src="images/weice_logo3.png" alt="Weice Logo" class="h-8 w-auto">
                     <span class="welcome-nav-title text-white text-lg font-semibold tracking-wide">Wiseway</span>
                 </div>
-                <button onclick="showRegisterFromWelcome()" class="welcome-nav-register-btn ml-auto bg-transparent text-gray-300 text-[18px] font-bold hover:bg-white/10 transition-colors" style="margin-right: -7px;">
+                <div id="welcome-daily-phrase" class="hidden text-white text-base font-bold tracking-wide mr-3"></div>
+                <button onclick="showRegisterFromWelcome()" id="welcome-register-btn" class="welcome-nav-register-btn ml-auto bg-transparent text-white text-[18px] font-bold hover:bg-white/10 transition-colors" style="margin-right: -7px;">
                     注册
                 </button>
             </div>
@@ -14967,6 +14968,9 @@ void main() {
             <div class="text-left max-w-md flex-shrink-0 auth-left-text">
                 <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
                 <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+                <div id="login-daily-phrase" class="hidden text-white text-base font-bold tracking-wide mt-4 auth-glass-card liquid-glass-panel inline-block px-6 py-3 rounded-2xl w-[200px] text-center">
+                    <span id="login-daily-phrase-text" class="inline-block transition-all duration-600 opacity-0 translate-y-[-4px]"></span>
+                </div>
             </div>
             <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
@@ -14991,7 +14995,7 @@ void main() {
                 <div class="flex items-center justify-between">
                     <label class="flex items-center space-x-2">
                         <input type="checkbox" id="remember-me" class="text-primary focus:ring-primary">
-                        <span class="text-sm text-gray-700">记住我（仅当日记住且免登）</span>
+                        <span class="text-sm text-gray-700">记住我</span>
                     </label>
                     <button onclick="showForgotPasswordModal()" class="text-sm text-primary hover:text-primary/80 transition-colors">忘记密码？</button>
                 </div>
@@ -15057,6 +15061,9 @@ void main() {
             <div class="text-left max-w-md flex-shrink-0 auth-left-text">
                 <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
                 <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+                <div id="forgot-daily-phrase" class="hidden text-white text-base font-bold tracking-wide mt-4 auth-glass-card liquid-glass-panel inline-block px-6 py-3 rounded-2xl w-[200px] text-center">
+                    <span class="inline-block transition-all duration-600 opacity-0 translate-y-[-4px]"></span>
+                </div>
             </div>
             <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
@@ -15121,6 +15128,9 @@ void main() {
             <div class="text-left max-w-md flex-shrink-0 auth-left-text">
                 <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 tracking-wide">你的效率工作台</h1>
                 <p class="text-gray-300 text-lg">让电商运营更高效 · 更智能</p>
+                <div id="register-daily-phrase" class="hidden text-white text-base font-bold tracking-wide mt-4 auth-glass-card liquid-glass-panel inline-block px-6 py-3 rounded-2xl w-[200px] text-center">
+                    <span class="inline-block transition-all duration-600 opacity-0 translate-y-[-4px]"></span>
+                </div>
             </div>
             <div class="auth-glass-card liquid-glass-panel w-full max-w-md p-8 transform transition-all duration-300" style="transform: scale(0.9); transform-origin: center;">
             <div class="text-center mb-6">
@@ -17583,7 +17593,7 @@ void main() {
                                                     <span>开启免登</span>
                                                     <i class="fa fa-chevron-down text-xs"></i>
                                                 </button>
-                                                <div id="login-duration-menu" class="absolute right-0 mt-2 w-32 bg-white rounded-3xl shadow-lg border border-gray-200 py-2 z-50 hidden">
+                                                <div id="login-duration-menu" class="absolute right-0 mt-2 w-32 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 z-50 hidden overflow-hidden">
                                                     <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onclick="enableTodayLogin(1)">今日免登</button>
                                                     <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onclick="enableTodayLogin(7)">7日免登</button>
                                                     <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onclick="enableTodayLogin(30)">30日免登</button>
@@ -18652,8 +18662,16 @@ void main() {
                             const user = users.find(u => u.username === todayLogin.username);
                             if (user) {
                                 currentUser = user;
-                                console.log('免登有效，自动登录');
-                                await showMainPage();
+                                console.log('免登有效，显示欢迎页');
+                                showAuthAurora();
+                                document.getElementById('welcome-register-btn').classList.add('hidden');
+                                showDailyPhrase();
+                                const wp = document.getElementById('welcome-page');
+                                wp.classList.remove('hidden');
+                                wp.classList.remove('visible');
+                                setTimeout(() => {
+                                    wp.classList.add('visible');
+                                }, 50);
                                 return;
                             }
                         } else {
@@ -18667,8 +18685,16 @@ void main() {
                             const user = users.find(u => u.username === todayLogin.username);
                             if (user) {
                                 currentUser = user;
-                                console.log('今日已登录，自动免登');
-                                await showMainPage();
+                                console.log('今日已登录，显示欢迎页');
+                                showAuthAurora();
+                                document.getElementById('welcome-register-btn').classList.add('hidden');
+                                showDailyPhrase();
+                                const wp = document.getElementById('welcome-page');
+                                wp.classList.remove('hidden');
+                                wp.classList.remove('visible');
+                                setTimeout(() => {
+                                    wp.classList.add('visible');
+                                }, 50);
                                 return;
                             }
                         }
@@ -18678,6 +18704,7 @@ void main() {
                     lp.classList.remove('hidden');
                     lp.classList.remove('visible');
                     showAuthAurora();
+                    showDailyPhrase('login-daily-phrase');
                     setTimeout(() => {
                         lp.classList.add('visible');
                         markAuthTextPlayed();
@@ -18685,6 +18712,7 @@ void main() {
                 } else {
 
                     showAuthAurora();
+                    showDailyPhrase();
                     const wp = document.getElementById('welcome-page');
                     wp.classList.remove('hidden');
                     wp.classList.remove('visible');
@@ -18802,6 +18830,7 @@ void main() {
                 if (aurora._aurora) {
                     aurora._aurora.destroy();
                 }
+                stopDailyPhrase();
                 document.getElementById('welcome-page').classList.add('hidden');
                 document.getElementById('welcome-page').classList.remove('visible');
                 document.getElementById('login-page').classList.add('hidden');
@@ -18810,6 +18839,156 @@ void main() {
                 document.getElementById('register-page').classList.remove('visible');
                 document.getElementById('forgot-password-modal').classList.add('hidden');
                 document.getElementById('forgot-password-modal').classList.remove('visible');
+            }
+
+            const warmPhrases = [
+                '用心经营 必有回响',
+                '忙时 记得歇一歇',
+                '细节成就订单',
+                '每一份努力皆可期',
+                '认真对待每笔订单',
+                '忙而不躁 稳步前行',
+                '星光不负赶路人',
+                '保持热忱前行',
+                '深耕 自有收获',
+                '劳逸结合 高效经营',
+                '放平心态 从容运营',
+                '点滴积累 终有收获',
+                '不负时光 生意兴隆'
+            ];
+
+            const practicalPhrases = [
+                '核对数据 谨慎操作',
+                '复盘店铺 优化细节',
+                '关注流量 把握时机',
+                '定时巡检商品状态',
+                '优化品效 稳步提升',
+                '留意活动 抢抓机会',
+                '做好备货 从容应对',
+                '核对价目 防止出错',
+                '沉淀数据 找准方向',
+                '管控库龄 轻装上阵',
+                '查漏补缺 降低风险',
+                '把控时效 减少售后',
+                '梳理订单 规避错漏'
+            ];
+
+            let phraseInterval = null;
+            let phraseIsFirst = true;
+            let lastPhrase = null;
+
+            function showDailyPhrase(targetId) {
+                const allTargets = [
+                    'welcome-daily-phrase',
+                    'login-daily-phrase',
+                    'forgot-daily-phrase',
+                    'register-daily-phrase'
+                ];
+                const targetEl = targetId ? document.getElementById(targetId) : document.getElementById('welcome-daily-phrase');
+                
+                if (!targetEl) return;
+
+                const pickPhrase = () => {
+                    const useWarm = Math.random() < 0.3;
+                    const pool = useWarm ? warmPhrases : practicalPhrases;
+                    let phrase;
+                    let attempts = 0;
+                    do {
+                        phrase = pool[Math.floor(Math.random() * pool.length)];
+                        attempts++;
+                    } while (phrase === lastPhrase && attempts < 10 && pool.length > 1);
+                    lastPhrase = phrase;
+                    return phrase;
+                };
+
+                const setPhrase = (el, phrase) => {
+                    if (!el) return;
+                    el.classList.remove('hidden');
+                    const textEl = el.querySelector('span') || el;
+                    textEl.textContent = phrase;
+                    textEl.style.transition = 'none';
+                    textEl.style.opacity = '0';
+                    textEl.style.transform = 'translateY(-4px)';
+
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            textEl.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                            textEl.style.opacity = '1';
+                            textEl.style.transform = 'translateY(0)';
+                        });
+                    });
+                };
+
+                const switchPhrase = (el) => {
+                    if (!el || el.classList.contains('hidden')) return;
+                    const textEl = el.querySelector('span') || el;
+                    
+                    textEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    textEl.style.opacity = '0';
+                    textEl.style.transform = 'translateY(4px)';
+
+                    setTimeout(() => {
+                        if (!phraseInterval) return;
+                        const phrase = pickPhrase();
+                        textEl.textContent = phrase;
+                        textEl.style.transition = 'none';
+                        textEl.style.opacity = '0';
+                        textEl.style.transform = 'translateY(-4px)';
+
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                textEl.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                                textEl.style.opacity = '1';
+                                textEl.style.transform = 'translateY(0)';
+                            });
+                        });
+                    }, 400);
+                };
+
+                if (phraseIsFirst) {
+                    setPhrase(targetEl, pickPhrase());
+                    // Show on all other available pages
+                    allTargets.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && el !== targetEl) {
+                            setPhrase(el, pickPhrase());
+                        }
+                    });
+                    phraseIsFirst = false;
+                } else {
+                    // Show on the specific target if hidden
+                    if (targetEl.classList.contains('hidden')) {
+                        setPhrase(targetEl, pickPhrase());
+                    }
+                    // Show on any other available hidden targets
+                    allTargets.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && el !== targetEl && el.classList.contains('hidden')) {
+                            setPhrase(el, pickPhrase());
+                        }
+                    });
+                }
+
+                if (phraseInterval) {
+                    clearInterval(phraseInterval);
+                }
+                phraseInterval = setInterval(() => {
+                    allTargets.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && !el.classList.contains('hidden')) {
+                            switchPhrase(el);
+                        }
+                    });
+                }, 5000);
+            }
+
+            function stopDailyPhrase() {
+                if (phraseInterval) {
+                    clearInterval(phraseInterval);
+                    phraseInterval = null;
+                }
+                phraseIsFirst = true;
+                lastPhrase = null;
             }
             function markAuthTextPlayed() {
                 if (!authTextPlayed) {
@@ -18834,6 +19013,7 @@ void main() {
                 document.getElementById('remember-me').checked = false;
 
                 showAuthAurora();
+                showDailyPhrase('login-daily-phrase');
                 setTimeout(() => {
                     lp.classList.add('visible');
                     markAuthTextPlayed();
@@ -18845,6 +19025,7 @@ void main() {
                 document.getElementById('register-page').classList.add('hidden');
                 document.getElementById('forgot-password-modal').classList.add('hidden');
                 showAuthAurora();
+                showDailyPhrase();
                 const wp = document.getElementById('welcome-page');
                 wp.classList.remove('hidden');
                 wp.classList.remove('visible');
@@ -18862,6 +19043,7 @@ void main() {
                 document.getElementById('register-password').value = '';
                 document.getElementById('register-confirm-password').value = '';
                 showAuthAurora();
+                showDailyPhrase('register-daily-phrase');
                 setTimeout(() => {
                     rp.classList.add('visible');
                     markAuthTextPlayed();
@@ -18872,7 +19054,7 @@ void main() {
                 document.getElementById('welcome-page').classList.add('hidden');
                 hideAuthAurora();
                 await showMainPage();
-                if (!localStorage.getItem('welcomeToastShown')) {
+                if (!currentUser && !localStorage.getItem('welcomeToastShown')) {
                     showToast('欢迎', '您已成功进入应用，可在设置中注册账号', 'success');
                     localStorage.setItem('welcomeToastShown', 'true');
                 }
@@ -18900,6 +19082,7 @@ void main() {
                 document.getElementById('register-confirm-password').value = '';
 
                 showAuthAurora();
+                showDailyPhrase('register-daily-phrase');
                 setTimeout(() => {
                     rp.classList.add('visible');
                     markAuthTextPlayed();
@@ -26676,9 +26859,13 @@ void main() {
                     await saveUserData('currentUser', currentUser);
 
                     if (rememberMe) {
+                        const expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 30);
                         todayLogin = {
                             username: username,
-                            date: new Date().toDateString()
+                            date: new Date().toDateString(),
+                            expireDate: expireDate.toDateString(),
+                            duration: 30
                         };
                         await saveUserData('todayLogin', todayLogin);
                     }
@@ -27187,6 +27374,7 @@ void main() {
                 document.getElementById('forgot-phone-field').classList.add('hidden');
 
                 showAuthAurora();
+                showDailyPhrase('forgot-daily-phrase');
                 setTimeout(() => {
                     fp.classList.add('visible');
                     markAuthTextPlayed();
@@ -27200,6 +27388,7 @@ void main() {
                 lp.classList.remove('visible');
 
                 showAuthAurora();
+                showDailyPhrase('login-daily-phrase');
                 setTimeout(() => {
                     lp.classList.add('visible');
                     markAuthTextPlayed();
@@ -27565,11 +27754,17 @@ void main() {
 
                 refreshUserList();
 
+                document.getElementById('main-nav').classList.add('hidden');
+                document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('notes').classList.add('hidden');
+                document.getElementById('welcome-page').classList.add('hidden');
+                document.getElementById('register-page').classList.add('hidden');
+
                 const lp = document.getElementById('login-page');
                 lp.classList.remove('hidden');
                 lp.classList.remove('visible');
-                document.getElementById('register-page').classList.add('hidden');
                 showAuthAurora();
+                showDailyPhrase('login-daily-phrase');
                 setTimeout(() => {
                     lp.classList.add('visible');
                     markAuthTextPlayed();
@@ -27625,6 +27820,11 @@ void main() {
             async function deleteUser(username) {
                 const isCurrentUser = currentUser && username === currentUser.username;
 
+                // Clear auto-login if the deleted user had it
+                if (todayLogin.username === username) {
+                    await clearTodayLogin();
+                }
+
                 const allUsers = await getAllUsers();
                 const updatedUsers = allUsers.filter(user => user.username !== username);
 
@@ -27643,6 +27843,7 @@ void main() {
                         lp.classList.remove('hidden');
                         lp.classList.remove('visible');
                         showAuthAurora();
+                        showDailyPhrase('login-daily-phrase');
                         setTimeout(() => {
                             lp.classList.add('visible');
                             markAuthTextPlayed();
@@ -27669,10 +27870,12 @@ void main() {
 
                 document.getElementById('main-nav').classList.add('hidden');
                 document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('welcome-register-btn').classList.remove('hidden');
                 const lp = document.getElementById('login-page');
                 lp.classList.remove('hidden');
                 lp.classList.remove('visible');
                 showAuthAurora();
+                showDailyPhrase('login-daily-phrase');
                 setTimeout(() => {
                     lp.classList.add('visible');
                     markAuthTextPlayed();
