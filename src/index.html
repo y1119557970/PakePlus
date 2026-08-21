@@ -2701,28 +2701,8 @@ void main() {
         const uRes = gl.getUniformLocation(prog, 'uResolution');
         const uBlendLoc = gl.getUniformLocation(prog, 'uBlend');
 
-        function resize() {
-            const w = el.clientWidth || el.offsetWidth;
-            const h = el.clientHeight || el.offsetHeight;
-            if (!w || !h) return;
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            const cw = Math.floor(w * dpr);
-            const ch = Math.floor(h * dpr);
-            if (canvas.width !== cw || canvas.height !== ch) {
-                canvas.width = cw;
-                canvas.height = ch;
-            }
-            gl.viewport(0, 0, canvas.width, canvas.height);
-            gl.uniform2f(uRes, canvas.width, canvas.height);
-        }
-
-        let rafId = 0;
-        let start = performance.now();
-        let running = true;
-
-        function render(t) {
-            if (!running) return;
-            const time = (t - start) * 0.01;
+        function drawFrame() {
+            const time = (performance.now() - start) * 0.01;
             gl.uniform1f(uTime, time * speed * 0.1);
             gl.uniform1f(uAmp, amplitude);
             gl.uniform1f(uBlendLoc, blend);
@@ -2732,19 +2712,65 @@ void main() {
             gl.clear(gl.COLOR_BUFFER_BIT);
             gl.useProgram(prog);
             gl.drawArrays(gl.TRIANGLES, 0, 3);
+        }
+
+        function resize() {
+            const w = el.clientWidth || el.offsetWidth;
+            const h = el.clientHeight || el.offsetHeight;
+            if (!w || !h) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const cw = Math.floor(w * dpr);
+            const ch = Math.floor(h * dpr);
+            const sizeChanged = (canvas.width !== cw || canvas.height !== ch);
+            if (sizeChanged) {
+                // 修改 canvas.width/height 会立即清空 framebuffer，
+                // 在下一帧渲染前会显示空白，导致拖动窗口时闪烁
+                canvas.width = cw;
+                canvas.height = ch;
+            }
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            // 尺寸变化后立即补绘一帧，避免 framebuffer 被清空造成的空白闪烁
+            if (sizeChanged && running) {
+                drawFrame();
+            }
+        }
+
+        let rafId = 0;
+        let start = performance.now();
+        let running = true;
+        let resizeRaf = 0;
+
+        function render() {
+            if (!running) return;
+            drawFrame();
             rafId = requestAnimationFrame(render);
+        }
+
+        // 拖动窗口时 ResizeObserver 会高频触发，
+        // 用 rAF 合并同一帧内的多次 resize 调用，减少 canvas 重置和闪烁
+        function scheduleResize() {
+            if (resizeRaf) return;
+            resizeRaf = requestAnimationFrame(() => {
+                resizeRaf = 0;
+                resize();
+            });
         }
 
         resize();
         rafId = requestAnimationFrame(render);
 
-        const ro = new ResizeObserver(resize);
+        const ro = new ResizeObserver(scheduleResize);
         ro.observe(el);
 
         el._aurora = {
             destroy: function() {
                 running = false;
                 cancelAnimationFrame(rafId);
+                if (resizeRaf) {
+                    cancelAnimationFrame(resizeRaf);
+                    resizeRaf = 0;
+                }
                 ro.disconnect();
                 try { gl.getExtension('WEBGL_lose_context')?.loseContext(); } catch(e) {}
             },
