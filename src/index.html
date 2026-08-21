@@ -509,6 +509,149 @@
             contain: style paint;
         }
 
+        /* ===== Tauri 2 沉浸式窗口控制按钮 ===== */
+        /* Windows 风格：从左到右依次为 最小化 → 最大化/还原 → 关闭；
+           无彩色圆形背景，默认透明，hover 显示浅色背景；关闭按钮 hover 显示红色背景。 */
+        #tauri-titlebar-controls {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            z-index: 2147483647;
+            -webkit-app-region: no-drag;
+            app-region: no-drag;
+            user-select: none;
+        }
+
+        #tauri-titlebar-controls .tc-btn {
+            width: 46px;
+            height: 38px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: #6b7280;
+            transition: background-color 0.12s ease, color 0.12s ease;
+            -webkit-app-region: no-drag;
+            app-region: no-drag;
+            border-radius: 0;
+        }
+
+        #tauri-titlebar-controls .tc-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        #tauri-titlebar-controls .tc-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: #1f2937;
+        }
+
+        #tauri-titlebar-controls .tc-close:hover {
+            background: #e81123 !important;
+            color: #ffffff !important;
+        }
+
+        #tauri-titlebar-controls .tc-btn:active {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        #tauri-titlebar-controls .tc-maximize.restored svg.tc-icon-restore {
+            display: block;
+        }
+        #tauri-titlebar-controls .tc-maximize.restored svg.tc-icon-max {
+            display: none;
+        }
+
+        /* 置顶按钮 */
+        #tauri-titlebar-controls .tc-pin svg {
+            transform: rotate(-45deg) scale(1.2);
+            transform-origin: center;
+        }
+
+        /* 置顶按钮激活态 - 仅图标变蓝 */
+        #tauri-titlebar-controls .tc-pin.active {
+            color: #2563eb;
+        }
+        html.dark #tauri-titlebar-controls .tc-pin.active {
+            color: #3b82f6;
+        }
+
+        html.dark #tauri-titlebar-controls .tc-btn {
+            color: #9ca3af;
+        }
+        html.dark #tauri-titlebar-controls .tc-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f3f4f6;
+        }
+        html.dark #tauri-titlebar-controls .tc-close:hover {
+            background: #e81123 !important;
+            color: #ffffff !important;
+        }
+
+        /* 非 Tauri 环境下隐藏按钮 */
+        body:not(.is-tauri) #tauri-titlebar-controls {
+            display: none !important;
+        }
+
+        /* 为沉浸式窗口预留顶部安全空间 */
+        body.is-tauri {
+            padding-top: 0;
+        }
+
+        /* ===== Tauri 2 顶部拖拽区域 ===== */
+        /* 拖拽层：原生标题栏高度(38px)，仅覆盖窗口顶部窄条区域。
+           导航栏(#main-nav)为 pointer-events:auto + no-drag，完全不可拖拽。
+           拖拽层 z-index(35) 低于导航栏(z-40)，点击导航栏区域不会穿透至拖拽层。 */
+        #tauri-drag-region {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            z-index: 35;
+            -webkit-app-region: drag;
+            app-region: drag;
+            pointer-events: auto;
+        }
+
+        #tauri-drag-region .drag-content {
+            height: 100%;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        #tauri-drag-region .no-drag,
+        #tauri-drag-region button,
+        #tauri-drag-region a,
+        #tauri-drag-region input,
+        #tauri-drag-region select,
+        #tauri-drag-region textarea,
+        #tauri-drag-region [role="button"],
+        #tauri-drag-region .cursor-pointer {
+            -webkit-app-region: no-drag;
+            app-region: no-drag;
+            pointer-events: auto;
+        }
+
+        #main-nav {
+            -webkit-app-region: no-drag;
+            app-region: no-drag;
+        }
+
+        body:not(.is-tauri) #tauri-drag-region {
+            display: none !important;
+        }
 
     </style>
     <script>
@@ -555,6 +698,68 @@
         alert('系统正在初始化，请稍后再试');
     };
 
+    // ===== 统一通知发送工具（Tauri 2 + 浏览器兼容） =====
+    let _tauriNotificationPermission = null; // 缓存 Tauri 通知权限状态
+
+    async function _ensureTauriNotificationPermission() {
+        if (_tauriNotificationPermission === 'granted') return true;
+        try {
+            const isGranted = await window.__TAURI__.core.invoke('plugin:notification|is_permission_granted');
+            if (isGranted) {
+                _tauriNotificationPermission = 'granted';
+                return true;
+            }
+            const result = await window.__TAURI__.core.invoke('plugin:notification|request_permission');
+            _tauriNotificationPermission = result ? 'granted' : 'denied';
+            return result;
+        } catch (e) {
+            console.warn('Tauri notification permission check failed:', e);
+            return false;
+        }
+    }
+
+    async function _sendTauriNotification(title, body) {
+        try {
+            const hasPermission = await _ensureTauriNotificationPermission();
+            if (!hasPermission) return false;
+            await window.__TAURI__.core.invoke('plugin:notification|notify', {
+                options: { title, body }
+            });
+            return true;
+        } catch (e) {
+            console.warn('Tauri notification send failed:', e);
+            return false;
+        }
+    }
+
+    async function _sendBrowserNotification(title, body) {
+        if (!('Notification' in window)) return false;
+        if (Notification.permission === 'granted') {
+            new Notification(title, { body });
+            return true;
+        }
+        if (Notification.permission !== 'denied') {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                new Notification(title, { body });
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 统一通知发送入口：Tauri 原生通知优先，失败后回退浏览器 Notification
+    async function sendDesktopNotification(title, body) {
+        if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
+            const ok = await _sendTauriNotification(title, body);
+            if (ok) return;
+        }
+        // Tauri 不存在或 Tauri 通知失败 → 回退浏览器 Notification
+        await _sendBrowserNotification(title, body);
+    }
+
+    window.sendDesktopNotification = sendDesktopNotification;
+
     window.showNotification = async function(message, type = 'info') {
         const titleMap = {
             'info': '提示',
@@ -563,32 +768,7 @@
             'warning': '警告'
         };
         const title = titleMap[type] || '提示';
-        const icon = 'https://cdn-icons-png.flaticon.com/512/1214/1214428.png';
-
-        if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
-            try {
-                await window.__TAURI__.core.invoke('notification', { params: { title, body: message, icon } });
-                return;
-            } catch (error) {
-                console.warn('Tauri notification failed:', error);
-            }
-        }
-
-        if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification(title, { body: message, icon });
-            return;
-        }
-
-        if ('Notification' in window && Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    new Notification(title, { body: message, icon });
-                }
-            });
-            return;
-        }
-
-        alert(message);
+        await sendDesktopNotification(title, message);
     };
 
     window.showUserAgreementModal = function() {
@@ -14801,6 +14981,12 @@ void main() {
             overflow: hidden;
             padding: 0 12px !important;
         }
+
+        /* Tauri 沉浸式模式下，欢迎页导航栏下移以预留拖拽区域 */
+        body.is-tauri .welcome-nav-content {
+            padding-top: 58px !important;
+        }
+
         .welcome-nav-glass::before {
             background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.14) 100%);
         }
@@ -15171,8 +15357,13 @@ void main() {
     </div>
     </div>
 
+    <!-- Tauri 2 顶部拖拽区域包装器 -->
+    <div id="tauri-drag-region" data-tauri-drag-region style="display:none;">
+        <div class="drag-content"></div>
+    </div>
+
     <!-- Navigation Tabs -->
-    <nav id="main-nav" class="sticky top-6 z-40" style="height: 72px; min-width: 1350px; width: min(2000px, max(1350px, calc(1350px + (100% - 1400px) * 0.4))); margin-left: auto !important; margin-right: auto !important; box-sizing: content-box; pointer-events: none; opacity: 0;">
+    <nav id="main-nav" class="sticky top-6 z-40" style="height: 72px; min-width: 1350px; width: min(2000px, max(1350px, calc(1350px + (100% - 1400px) * 0.4))); margin-left: auto !important; margin-right: auto !important; box-sizing: content-box; pointer-events: auto; opacity: 0;">
         <div class="w-full h-full flex items-center justify-center" style="min-width: 1350px;">
             <div class="flex items-center gap-6" style="pointer-events: auto;">
                 <div id="logo-glass" class="liquid-glass-panel rounded-full flex items-center justify-center flex-shrink-0 cursor-pointer" style="width: 48px; height: 48px;" onclick="toggleBgFx()" title="切换背景效果">
@@ -19870,6 +20061,11 @@ void main() {
                     }
                 });
 
+                // Tauri 环境下主动请求通知权限
+                if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
+                    _ensureTauriNotificationPermission();
+                }
+
                 checkOverdueTasksOnStartup();
 
                 initSystemTray();
@@ -20043,6 +20239,11 @@ void main() {
                 const statusChanged = autoUpdateTaskStatus();
                 if (statusChanged) {
                     await saveTasks();
+                }
+
+                // 加载任务后调度精确超时（确保截止时间到达时立即更新状态）
+                if (typeof scheduleStatusUpdatesForDueTasks === 'function') {
+                    scheduleStatusUpdatesForDueTasks();
                 }
 
                 resetRecurringTasks();
@@ -24132,6 +24333,29 @@ void main() {
                     await saveTasks();
                     await loadTasks();
 
+                    // 重算所有任务状态（确保逾期等状态即时更新）
+                    if (typeof autoUpdateTaskStatus === 'function') {
+                        const statusChanged = autoUpdateTaskStatus();
+                        if (statusChanged) {
+                            await saveTasks();
+                        }
+                    }
+
+                    // 重新渲染3D卡片（刷新 carouselTasks 数据源，重建卡片状态和颜色）
+                    if (currentTodoView === 'task-manage' && typeof renderCarousel === 'function') {
+                        renderCarousel(currentTaskId);
+                    }
+
+                    // 实时更新任务面板计数
+                    if (typeof renderTaskGroups === 'function') {
+                        renderTaskGroups();
+                    }
+
+                    // 非任务管理视图下重新渲染任务列表
+                    if (currentTodoView !== 'task-manage' && typeof renderOriginalTaskList === 'function') {
+                        renderOriginalTaskList();
+                    }
+
                     // Update right panel if same task
                     if (currentTaskId === taskId) {
                         updateTaskDetailPanel(taskId, true);
@@ -24145,7 +24369,27 @@ void main() {
                 if (task) {
                     task.important = !task.important;
                     await saveTasks();
-                    loadTasks();
+                    await loadTasks();
+
+                    // 重新渲染3D卡片（刷新 carouselTasks 数据源）
+                    if (currentTodoView === 'task-manage' && typeof renderCarousel === 'function') {
+                        renderCarousel(currentTaskId);
+                    }
+
+                    // 实时更新任务面板计数
+                    if (typeof renderTaskGroups === 'function') {
+                        renderTaskGroups();
+                    }
+
+                    // 非任务管理视图下重新渲染任务列表
+                    if (currentTodoView !== 'task-manage' && typeof renderOriginalTaskList === 'function') {
+                        renderOriginalTaskList();
+                    }
+
+                    // Update right panel if same task
+                    if (currentTaskId === taskId) {
+                        updateTaskDetailPanel(taskId, true);
+                    }
                 }
             }
 
@@ -25343,6 +25587,16 @@ void main() {
                         statusEl.className = `carousel-card-status ${statusClass}`;
                         statusEl.textContent = statusText;
                     }
+
+                    // 同步更新卡片的 overdue-active 颜色类（仅对当前激活卡片）
+                    if (card.classList.contains('active')) {
+                        const isOverdue = !task.completed && (task.status === '已逾期' || (task.dueDate && new Date(task.dueDate) < new Date(new Date().toDateString())));
+                        if (isOverdue) {
+                            card.classList.add('overdue-active');
+                        } else {
+                            card.classList.remove('overdue-active');
+                        }
+                    }
                 }
 
                 const targetTaskElement = document.querySelector(`[data-task-id="${taskId}"]`);
@@ -25815,18 +26069,7 @@ void main() {
 
             async function showAdvanceNotification(taskTitle) {
                 const message = `待办 "${taskTitle}" 将在15分钟后到时间！`;
-                const icon = 'https://cdn-icons-png.flaticon.com/512/1214/1214428.png';
-
-                if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
-                    try {
-                        await window.__TAURI__.core.invoke('notification', { params: { title: '待办提醒', body: message, icon } });
-                    } catch (error) {
-                        console.warn('Tauri notification failed:', error);
-                    }
-                } else if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification('待办提醒', { body: message, icon });
-                }
-
+                await sendDesktopNotification('待办提醒', message);
                 showToast('待办提醒', message, 'warning');
             }
 
@@ -25884,17 +26127,7 @@ void main() {
                     message = `待办 "${taskTitle}" 已超过截止日期！`;
                 }
 
-                const icon = 'https://cdn-icons-png.flaticon.com/512/1214/1214428.png';
-                if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
-                    try {
-                        await window.__TAURI__.core.invoke('notification', { params: { title, body: message, icon } });
-                    } catch (error) {
-                        console.warn('Tauri notification failed:', error);
-                    }
-                } else if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification(title, { body: message, icon });
-                }
-
+                await sendDesktopNotification(title, message);
                 showToast(title, message, type === 'overdue' ? 'error' : 'warning');
             }
 
@@ -25929,9 +26162,43 @@ void main() {
             }
 
             let taskStatusTimer = null;
+            let dueDateTimeouts = [];
+
+            function clearDueDateTimeouts() {
+                dueDateTimeouts.forEach(id => clearTimeout(id));
+                dueDateTimeouts = [];
+            }
+
+            // 为每个即将到期的未完成任务精确调度：截止时间到达时立即更新状态
+            function scheduleStatusUpdatesForDueTasks() {
+                clearDueDateTimeouts();
+                const now = Date.now();
+                tasks.forEach(task => {
+                    if (task.completed || !task.dueDate) return;
+                    const dueTime = new Date(task.dueDate).getTime();
+                    const delay = dueTime - now;
+                    // 只调度未来 24 小时内的到期任务
+                    if (delay > 0 && delay <= 86400000) {
+                        const id = setTimeout(() => {
+                            const changed = autoUpdateTaskStatus();
+                            if (changed) {
+                                saveTasks();
+                                renderTasks();
+                                if (currentTaskId && typeof updateTaskDetailPanel === 'function') {
+                                    updateTaskDetailPanel(currentTaskId, true);
+                                }
+                            }
+                            // 状态更新后重新调度（清除已触发的 timeout）
+                            scheduleStatusUpdatesForDueTasks();
+                        }, delay + 500); // +500ms 确保跨过截止时刻
+                        dueDateTimeouts.push(id);
+                    }
+                });
+            }
 
             function startTaskStatusAutoUpdate() {
                 if (taskStatusTimer) clearInterval(taskStatusTimer);
+                // 兜底轮询：每 15 秒检查一次（防止精确调度遗漏）
                 taskStatusTimer = setInterval(() => {
                     const modal = document.getElementById('task-detail-modal');
                     const isModalOpen = modal && !modal.classList.contains('hidden');
@@ -25944,8 +26211,11 @@ void main() {
                         if (currentTaskId && typeof updateTaskDetailPanel === 'function') {
                             updateTaskDetailPanel(currentTaskId, true);
                         }
+                        scheduleStatusUpdatesForDueTasks();
                     }
-                }, 60000);
+                }, 15000);
+                // 启动时立即调度一次精确超时
+                scheduleStatusUpdatesForDueTasks();
             }
 
             function checkOverdueTasksOnStartup() {
@@ -26153,6 +26423,11 @@ void main() {
                         closeDueDateModal();
                         updateTaskCardOverviews(currentTaskId);
                         showToast('成功', '截止日期已取消', 'success');
+
+                        // 重新调度精确超时
+                        if (typeof scheduleStatusUpdatesForDueTasks === 'function') {
+                            scheduleStatusUpdatesForDueTasks();
+                        }
                     }
                 }
             }
@@ -26287,6 +26562,11 @@ void main() {
                     updateTaskCardOverviews(currentTaskId);
 
                     scheduleDueDateReminder(task);
+
+                    // 重新调度精确超时
+                    if (typeof scheduleStatusUpdatesForDueTasks === 'function') {
+                        scheduleStatusUpdatesForDueTasks();
+                    }
                 } else {
                     showToast('错误', '请选择有效的日期', 'error');
                 }
@@ -26781,32 +27061,7 @@ void main() {
 
             async function showTaskNotification(taskTitle) {
                 const message = `待办 "${taskTitle}" 到时间了！`;
-
-                const icon = 'https://cdn-icons-png.flaticon.com/512/1214/1214428.png';
-                if ('__TAURI__' in window && window.__TAURI__?.core?.invoke) {
-                    try {
-                        await window.__TAURI__.core.invoke('notification', { params: { title: '待办提醒', body: message, icon } });
-                    } catch (error) {
-                        console.warn('Tauri notification failed:', error);
-                    }
-                } else if ('Notification' in window) {
-                    if (Notification.permission === 'granted') {
-                        new Notification('待办提醒', {
-                            body: message,
-                            icon
-                        });
-                    } else if (Notification.permission !== 'denied') {
-                        Notification.requestPermission().then(permission => {
-                            if (permission === 'granted') {
-                                new Notification('待办提醒', {
-                                    body: message,
-                                    icon: 'https://cdn-icons-png.flaticon.com/512/1214/1214428.png'
-                                });
-                            }
-                        });
-                    }
-                }
-
+                await sendDesktopNotification('待办提醒', message);
                 showToast('任务提醒', message, 'warning');
 
                 const task = tasks.find(t => t.title === taskTitle);
@@ -65690,5 +65945,355 @@ function otFmtMonth(iso) {
 
 <script src="license-check.js" defer></script>
 
-    </body></html>
-    </body></html>
+    </body>
+
+<!-- ===== Tauri 2 沉浸式窗口控制按钮（Pake Plus 兼容） ===== -->
+<div id="tauri-titlebar-controls" aria-label="窗口控制" role="toolbar" style="display:none;">
+    <!-- 置顶 -->
+    <button type="button" class="tc-btn tc-pin" id="tc-pin" title="窗口置顶" aria-label="窗口置顶">
+        <svg viewBox="0 0 1024 1024" aria-hidden="true">
+            <path d="M847.458 311.46c34.366 34.366 34.366 90.085 0 124.451L660.575 622.794l-13.025 154.44c-4.577 54.265-70.522 78.384-109.029 39.877L395.462 674.053 288.557 780.958c-12.496 12.497-32.758 12.496-45.254 0-12.497-12.497-12.497-32.758 0-45.255l106.905-106.905-144.161-144.161c-38.506-38.507-14.387-104.451 39.877-109.028l160.608-13.546 183.54-183.539c34.366-34.366 90.084-34.366 124.45 0L847.458 311.46z m-178.191-87.681c-9.372-9.372-24.568-9.372-33.941 0L442.993 416.112c-6.966 6.966-16.344 10.047-25.445 9.247l-0.148 0.015-166.098 14.008 332.474 332.475 14.008-166.099c0.721-8.551 4.743-16.031 10.705-21.295 0.443-0.501 0.902-0.994 1.382-1.474l192.333-192.333c9.372-9.372 9.372-24.568 0-33.941L669.267 223.779z" fill="currentColor" stroke="currentColor" stroke-width="20" stroke-linejoin="round"/>
+        </svg>
+    </button>
+    <!-- 最小化 -->
+    <button type="button" class="tc-btn tc-minimize" id="tc-minimize" title="最小化" aria-label="最小化">
+        <svg viewBox="0 0 12 12" aria-hidden="true">
+            <line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+    </button>
+    <!-- 最大化/还原 -->
+    <button type="button" class="tc-btn tc-maximize" id="tc-maximize" title="最大化" aria-label="最大化">
+        <svg class="tc-icon-max" viewBox="0 0 12 12" aria-hidden="true">
+            <rect x="2" y="2" width="8" height="8" rx="1" ry="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <svg class="tc-icon-restore" viewBox="0 0 12 12" aria-hidden="true" style="display:none;">
+            <rect x="3" y="1" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.1"/>
+            <rect x="1" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.1"/>
+        </svg>
+    </button>
+    <!-- 关闭 -->
+    <button type="button" class="tc-btn tc-close" id="tc-close" title="关闭 (Alt+F4)" aria-label="关闭">
+        <svg viewBox="0 0 12 12" aria-hidden="true">
+            <line x1="3" y1="3" x2="9" y2="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="9" y1="3" x2="3" y2="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+    </button>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    var TauriWindow = {
+        _win: null,
+        _ready: false,
+
+        isAvailable: function() {
+            return !!(window.__TAURI__ && (
+                (window.__TAURI__.window && (window.__TAURI__.window.appWindow || window.__TAURI__.window.getCurrentWindow)) ||
+                (window.__TAURI__.core && window.__TAURI__.core.invoke)
+            ));
+        },
+
+        getWindow: async function() {
+            if (this._win) return this._win;
+            try {
+                if (window.__TAURI__ && window.__TAURI__.window) {
+                    // Tauri 2: window.__TAURI__.window.appWindow
+                    if (window.__TAURI__.window.appWindow) {
+                        this._win = window.__TAURI__.window.appWindow;
+                    } else if (window.__TAURI__.window.getCurrentWindow) {
+                        // Tauri 1 fallback
+                        this._win = window.__TAURI__.window.getCurrentWindow();
+                    }
+                }
+            } catch (e) {
+                console.warn('[TauriWindow] getWindow failed:', e);
+            }
+            return this._win;
+        },
+
+        minimize: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.minimize === 'function') {
+                    await w.minimize();
+                    return true;
+                }
+            } catch (e) { console.warn('[TauriWindow] minimize failed:', e); }
+            if (window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke) {
+                try { await window.__TAURI__.core.invoke('plugin:window|minimize'); }
+                catch (e) { try { await window.__TAURI__.core.invoke('minimize'); } catch(_) {} }
+            }
+            return false;
+        },
+
+        toggleMaximize: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.toggleMaximize === 'function') {
+                    await w.toggleMaximize();
+                    return true;
+                }
+                if (w && typeof w.maximize === 'function') {
+                    if (w.isMaximized && await w.isMaximized()) {
+                        await w.unmaximize();
+                    } else {
+                        await w.maximize();
+                    }
+                    return true;
+                }
+            } catch (e) { console.warn('[TauriWindow] toggleMaximize failed:', e); }
+            if (window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke) {
+                try { await window.__TAURI__.core.invoke('plugin:window|toggle_maximize'); }
+                catch (e) { try { await window.__TAURI__.core.invoke('toggle_maximize'); } catch(_) {} }
+            }
+            return false;
+        },
+
+        close: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.close === 'function') {
+                    await w.close();
+                    return true;
+                }
+            } catch (e) { console.warn('[TauriWindow] close failed:', e); }
+            if (window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke) {
+                try { await window.__TAURI__.core.invoke('plugin:window|close'); }
+                catch (e) { try { await window.__TAURI__.core.invoke('close'); } catch(_) {} }
+            }
+            return false;
+        },
+
+        isMaximized: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.isMaximized === 'function') {
+                    return await w.isMaximized();
+                }
+            } catch (e) {}
+            return false;
+        },
+
+        onMaximizeChanged: function(handler) {
+            try {
+                if (window.__TAURI__ && window.__TAURI__.window && window.__TAURI__.window.onWindowEvent) {
+                    return window.__TAURI__.window.onWindowEvent('tauri://resize', handler);
+                }
+                if (window.__TAURI__ && window.__TAURI__.window && window.__TAURI__.window.listen) {
+                    return window.__TAURI__.window.listen('tauri://resize', handler);
+                }
+            } catch (e) {}
+            return null;
+        },
+
+        startDragging: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.startDragging === 'function') {
+                    await w.startDragging();
+                    return true;
+                }
+            } catch (e) { console.warn('[TauriWindow] startDragging failed:', e); }
+            if (window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke) {
+                try { await window.__TAURI__.core.invoke('plugin:window|start_dragging'); }
+                catch (e) { try { await window.__TAURI__.core.invoke('start_dragging'); } catch(_) {} }
+            }
+            return false;
+        },
+
+        setAlwaysOnTop: async function(flag) {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.setAlwaysOnTop === 'function') {
+                    await w.setAlwaysOnTop(flag);
+                    return true;
+                }
+            } catch (e) { console.warn('[TauriWindow] setAlwaysOnTop failed:', e); }
+            if (window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke) {
+                try { await window.__TAURI__.core.invoke('plugin:window|set_always_on_top', { alwaysOnTop: flag }); }
+                catch (e) { try { await window.__TAURI__.core.invoke('set_always_on_top', { always_on_top: flag }); } catch(_) {} }
+            }
+            return false;
+        },
+
+        isAlwaysOnTop: async function() {
+            try {
+                var w = await this.getWindow();
+                if (w && typeof w.isAlwaysOnTop === 'function') {
+                    return await w.isAlwaysOnTop();
+                }
+            } catch (e) {}
+            return false;
+        }
+    };
+
+    window.__TAURI_WINDOW__ = TauriWindow;
+
+    function initTitlebarControls() {
+        if (!TauriWindow.isAvailable()) {
+            document.body.classList.remove('is-tauri');
+            return;
+        }
+
+        document.body.classList.add('is-tauri');
+
+        var container = document.getElementById('tauri-titlebar-controls');
+        if (!container) return;
+
+        container.style.display = 'flex';
+
+        var btnClose = document.getElementById('tc-close');
+        var btnMax = document.getElementById('tc-maximize');
+        var btnMin = document.getElementById('tc-minimize');
+        var btnPin = document.getElementById('tc-pin');
+        var iconMax = btnMax.querySelector('.tc-icon-max');
+        var iconRestore = btnMax.querySelector('.tc-icon-restore');
+
+        btnClose.addEventListener('click', function(e) {
+            e.stopPropagation();
+            TauriWindow.close();
+        });
+
+        btnMax.addEventListener('click', function(e) {
+            e.stopPropagation();
+            TauriWindow.toggleMaximize();
+            updateMaxState();
+        });
+
+        btnMin.addEventListener('click', function(e) {
+            e.stopPropagation();
+            TauriWindow.minimize();
+        });
+
+        btnPin.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleAlwaysOnTop();
+        });
+
+        btnClose.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+        btnMax.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+        btnMin.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+        btnPin.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+
+        function updateMaxState() {
+            TauriWindow.isMaximized().then(function(maxed) {
+                if (maxed) {
+                    btnMax.classList.add('restored');
+                    btnMax.setAttribute('title', '还原');
+                    iconMax.style.display = 'none';
+                    iconRestore.style.display = 'block';
+                } else {
+                    btnMax.classList.remove('restored');
+                    btnMax.setAttribute('title', '最大化');
+                    iconMax.style.display = 'block';
+                    iconRestore.style.display = 'none';
+                }
+            });
+        }
+
+        updateMaxState();
+
+        function updatePinState() {
+            TauriWindow.isAlwaysOnTop().then(function(pinned) {
+                if (pinned) {
+                    btnPin.classList.add('active');
+                    btnPin.setAttribute('title', '取消置顶');
+                } else {
+                    btnPin.classList.remove('active');
+                    btnPin.setAttribute('title', '窗口置顶');
+                }
+            });
+        }
+
+        function toggleAlwaysOnTop() {
+            TauriWindow.isAlwaysOnTop().then(function(pinned) {
+                var next = !pinned;
+                TauriWindow.setAlwaysOnTop(next).then(function() {
+                    updatePinState();
+                });
+            });
+        }
+
+        updatePinState();
+
+        try {
+            if (window.__TAURI__ && window.__TAURI__.window) {
+                var fn = function() { updateMaxState(); };
+                if (window.__TAURI__.window.onWindowEvent) {
+                    window.__TAURI__.window.onWindowEvent('tauri://resize', fn);
+                    window.__TAURI__.window.onWindowEvent('tauri://move', fn);
+                } else if (window.__TAURI__.window.listen) {
+                    window.__TAURI__.window.listen('tauri://resize', fn);
+                    window.__TAURI__.window.listen('tauri://move', fn);
+                }
+            }
+        } catch (e) {}
+
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.key === 'F4') {
+                e.preventDefault();
+                TauriWindow.close();
+            }
+        });
+
+        TauriWindow._ready = true;
+        console.log('[TauriWindow] 沉浸式窗口控制按钮已初始化');
+    }
+
+    function initDragRegion() {
+        if (!TauriWindow.isAvailable()) return;
+
+        var dragRegion = document.getElementById('tauri-drag-region');
+        if (dragRegion) {
+            dragRegion.style.display = 'block';
+        }
+
+        var dragSelector = '#tauri-drag-region';
+        var interactiveSelector = 'button, a, input, select, textarea, [role="button"], .tab, .cursor-pointer, .theme-toggle, #logo-glass, .tc-btn, .purchase-dropdown-item';
+
+        document.addEventListener('mousedown', function(e) {
+            if (!TauriWindow.isAvailable()) return;
+            if (e.button !== 0) return;
+
+            var target = e.target;
+            if (!(target instanceof Element)) return;
+
+            if (!target.closest(dragSelector)) return;
+
+            if (target.closest(interactiveSelector)) return;
+
+            e.preventDefault();
+            TauriWindow.startDragging();
+        }, true);
+
+        console.log('[TauriWindow] 顶部拖拽区域已初始化（原生标题栏模式）');
+    }
+
+    function waitForTauri() {
+        if (TauriWindow.isAvailable()) {
+            initTitlebarControls();
+            initDragRegion();
+        } else {
+            var tries = 0;
+            var timer = setInterval(function() {
+                tries++;
+                if (TauriWindow.isAvailable() || tries > 50) {
+                    clearInterval(timer);
+                    initTitlebarControls();
+                    initDragRegion();
+                }
+            }, 100);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForTauri);
+    } else {
+        waitForTauri();
+    }
+})();
+</script>
+</body>
+</html>
